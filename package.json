@@ -1,0 +1,35 @@
+{
+  "name": "xyfir-payments",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/app.js",
+  "scripts": {
+    "build": "npm run build:css & npm run build:js",
+    "build:js": "webpack-cli",
+    "build:css": "npm run build:admin-css & npm run build:app-css",
+    "build:admin-css": "node-sass --output-style compressed client/styles/admin.scss server/static/admin.css",
+    "build:app-css": "node-sass --output-style compressed client/styles/app.scss server/static/app.css"
+  },
+  "author": "Xyfir, LLC <contact@xyfir.com> (https://xyfir.com/)",
+  "license": "",
+  "dependencies": {
+    "admyn": "^1.2.0",
+    "app-module-path": "^2.2.0",
+    "body-parser": "^1.18.2",
+    "express": "^4.16.3",
+    "mysql": "^2.15.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
+    "react-md": "^1.2.13",
+    "superagent": "^3.8.2"
+  },
+  "devDependencies": {
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "compression-webpack-plugin": "^1.1.11",
+    "node-sass": "^4.8.3",
+    "webpack": "^4.4.1"
+  }
+}
