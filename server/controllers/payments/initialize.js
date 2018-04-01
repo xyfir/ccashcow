@@ -34,12 +34,11 @@ module.exports = async function(req, res) {
       description: req.body.description,
       seller_id: req.body.seller_id,
       methods: JSON.stringify(req.body.methods),
-      method: req.body.method,
       amount: req.body.amount,
       info: JSON.stringify(req.body.info)
     });
-    db.release();
 
+    db.release();
     res.status(200).json({ id: result.insertId });
   }
   catch (err) {
