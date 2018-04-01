@@ -20,6 +20,7 @@
     "mysql": "^2.15.0",
     "react": "^16.3.0",
     "react-dom": "^16.3.0",
+    "react-load-script": "0.0.6",
     "react-md": "^1.2.13",
     "superagent": "^3.8.2"
   },
