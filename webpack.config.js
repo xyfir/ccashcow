@@ -25,12 +25,12 @@ module.exports = {
 
   entry: {
     Admin: './client/components/Admin.jsx',
-    App: './client/components/App.jsx'
+    Embed: './client/components/Embed.jsx'
   },
 
   output: {
     filename: '[name].js',
-    path: path.resolve(__dirname, 'client/static/js')
+    path: path.resolve(__dirname, 'server/static/js')
   },
 
   resolve: {
