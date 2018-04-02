@@ -4,3 +4,26 @@ $md-primary-color: $md-blue-500;
 $md-secondary-color: $md-blue-grey-500;
 
 @include react-md-everything;
+
+ul.errors {
+  color: red;
+}
+
+section.pay-with-square {
+  font-size: 13px;
+
+  input {
+    width: 100%;
+    color: #222;
+    border: none;
+    margin: 0.2em 0;
+    padding: 1px;
+    display: block;
+    font-size: 2em;
+    font-family: monospace;
+
+    &:focus {
+      outline: none;
+    }
+  }
+}
