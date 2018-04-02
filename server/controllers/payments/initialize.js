@@ -6,7 +6,7 @@ const MySQL = require('lib/MySQL');
  * @prop {number} seller_id
  * @prop {string} seller_key
  * @prop {string[]} methods
- * @prop {number} amount
+ * @prop {number} product_id
  * @prop {string} description
  * @prop {object} info
  * @prop {string} email
@@ -33,9 +33,9 @@ module.exports = async function(req, res) {
       INSERT INTO payments SET ?
     `, {
       description: req.body.description,
+      product_id: req.body.product_id,
       seller_id: req.body.seller_id,
       methods: JSON.stringify(req.body.methods),
-      amount: req.body.amount,
       email: req.body.email,
       info: JSON.stringify(req.body.info)
     });
