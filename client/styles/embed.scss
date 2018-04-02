@@ -5,25 +5,38 @@ $md-secondary-color: $md-blue-grey-500;
 
 @include react-md-everything;
 
-ul.errors {
-  color: red;
-}
+div.embed-entry {
+  >header.method-selector {
+    display: flex;
+    align-items: center;
 
-section.pay-with-square {
-  font-size: 13px;
+    >label {
+      color: $md-grey-500;
+      font-weight: bold;
+      text-transform: uppercase;
+    }
+  }
 
-  input {
-    width: 100%;
-    color: #222;
-    border: none;
-    margin: 0.2em 0;
-    padding: 1px;
-    display: block;
-    font-size: 2em;
-    font-family: monospace;
+  >ul.errors {
+    color: red;
+  }
 
-    &:focus {
-      outline: none;
+  >section.pay-with-square {
+    font-size: 13px;
+
+    input {
+      width: 100%;
+      color: #222;
+      border: none;
+      margin: 0.2em 0;
+      padding: 1px;
+      display: block;
+      font-size: 2em;
+      font-family: monospace;
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 }
