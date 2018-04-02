@@ -9,6 +9,7 @@ const MySQL = require('lib/MySQL');
  * @prop {number} amount
  * @prop {string} description
  * @prop {object} info
+ * @prop {string} email
  */
 /**
  * @typedef {object} ResponseBody
@@ -35,6 +36,7 @@ module.exports = async function(req, res) {
       seller_id: req.body.seller_id,
       methods: JSON.stringify(req.body.methods),
       amount: req.body.amount,
+      email: req.body.email,
       info: JSON.stringify(req.body.info)
     });
 
