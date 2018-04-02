@@ -1,3 +1,4 @@
+import { SelectField } from 'react-md';
 import { render } from 'react-dom';
 import request from 'superagent';
 import React from 'react';
@@ -19,6 +20,11 @@ class Embed extends React.Component {
        * @type {object}
        */
       payment: null,
+      /**
+       * The selected payment method to use
+       * @type {string}
+       */
+      method: null,
       /** @type {string[]} */
       errors: []
     };
@@ -29,7 +35,27 @@ class Embed extends React.Component {
 
     request.get(`/api/payments/${+match[1]}`).end((err, res) => {
       if (err) return this._communicate(STATUS.ERROR, err);
-      this.setState({ payment: res.body });
+
+      /** @type {string} */
+      const method = res.body.methods[0];
+
+      res.body.methods = res.body.methods.map(m => {
+        switch (m) {
+          case 'card':
+          case 'square':
+            return { label: 'Credit Card', value: 'square' };
+          case 'crypto':
+            return { label: 'Cryptocurrency', value: 'crypto' };
+          case 'swift':
+            return { label: 'SwiftDemand', value: 'swift' };
+          case 'inapp':
+            return { label: 'In-App Purchase', value: 'inapp' };
+          default:
+            return null;
+        }
+      });
+
+      this.setState({ payment: res.body, method });
     });
   }
 
@@ -53,17 +79,37 @@ class Embed extends React.Component {
   }
 
   render() {
-    const {payment, errors} = this.state;
+    const {payment, method, errors} = this.state;
 
     if (!payment) return null;
 
+    const form = (() => {
+      switch (method) {
+        case 'square': return <PayWithSquare Embed={this} />
+        default: return null
+      }
+    })();
+
     return (
       <div className='embed-entry'>
+        {payment.methods.length > 1 ? (
+          <header className='method-selector'>
+            <label>Payment Method</label>
+            <SelectField
+              id='payment-method'
+              value={method}
+              onChange={v => this.setState({ method: v })}
+              menuItems={payment.methods}
+              className='md-cell'
+            />
+          </header>
+        ) : null}
+
         {errors.length ? (<ul className='errors'>{
           errors.map((e, i) => <li key={i}>{e}</li>)
         }</ul>) : null}
 
-        <PayWithSquare Embed={this} />
+        {form}
       </div>
     )
   }
