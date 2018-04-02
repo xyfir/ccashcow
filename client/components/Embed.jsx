@@ -5,12 +5,23 @@ import React from 'react';
 // Constants
 import STATUS from 'constants/status';
 
+// Components
+import PayWithSquare from 'components/pay/Square';
+
 class Embed extends React.Component {
 
   constructor(props) {
     super(props);
 
-    this.state = { payment: null };
+    this.state = {
+      /**
+       * The shortened payment object from the API
+       * @type {object}
+       */
+      payment: null,
+      /** @type {string[]} */
+      errors: []
+    };
   }
 
   componentWillMount() {
@@ -22,22 +33,37 @@ class Embed extends React.Component {
     });
   }
 
+  /** @param {string|string[]} */
+  onError(error) {
+    this.setState({ errors: Array.isArray(error) ? error : [error] });
+  }
+
+  onSuccess() {
+    this.setState({ errors: [] });
+    this._communicate(0);
+  }
+
   /**
    * @param {number} status
    * @param {object} data
    */
   _communicate(status, data) {
     console.log('_communicate()', status, data);
-    window.parent.postMessage({ status, data }, '*');
+    window.parent.postMessage({ xyPayments: true, status, data }, '*');
   }
 
   render() {
-    const {payment} = this.state;
+    const {payment, errors} = this.state;
 
     if (!payment) return null;
 
     return (
       <div className='embed-entry'>
+        {errors.length ? (<ul className='errors'>{
+          errors.map((e, i) => <li key={i}>{e}</li>)
+        }</ul>) : null}
+
+        <PayWithSquare Embed={this} />
       </div>
     )
   }
