@@ -74,10 +74,10 @@ export default class SquareCardForm extends React.Component {
           url='https://js.squareup.com/v2/paymentform'
         />
 
+        <div id='sq-postal-code' />
         <div id='sq-card-number' />
         <div id='sq-cvv' />
         <div id='sq-expiration-date' />
-        <div id='sq-postal-code' />
 
         <Button
           raised primary
