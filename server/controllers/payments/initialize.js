@@ -16,7 +16,7 @@ const MySQL = require('lib/MySQL');
  * @prop {number} [id]
  */
 /**
- * `POST /api/payments/initialize`
+ * `POST /api/payments`
  * @param {object} req
  * @param {RequestBody} req.body
  * @param {object} res
