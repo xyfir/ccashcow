@@ -29,15 +29,18 @@ module.exports = async function(req, res) {
       throw 'Payment not ready yet';
 
     const payment = await getPayment(db, { paymentId, full: true });
-    db.release();
 
     if (payment.paid !== null)
       throw 'Payment has already been paid';
 
-    await db.query(
-      'UPDATE payments SET transaction = ?, method = ?, paid = NOW()',
-      [req.body.txn_id, `coinpayments:${req.body.currency.toLowerCase()}`]
-    );
+    await db.query(`
+      UPDATE payments SET transaction = ?, method = ?, paid = NOW()
+      WHERE id = ?
+    `, [
+      req.body.txn_id, `coinpayments:${req.body.currency.toLowerCase()}`,
+      paymentId
+    ]);
+    db.release();
 
     res.status(200).json({ });
   }
