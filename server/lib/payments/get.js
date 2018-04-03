@@ -2,12 +2,17 @@ const authorizeSeller = require('lib/sellers/authorize');
 const getProduct = require('lib/products/get');
 
 /**
+ * @typedef {object} GetPaymentOptions
+ * @prop {number} paymentId
+ * @prop {number} [sellerId]
+ * @prop {string} [sellerKey]
+ * @prop {boolean} [full]
+ */
+/**
  * Returns a payment's full or partial info depending on whether the payment's
  *  creator is requesting the information.
  * @param {MySQL} db
- * @param {number} paymentId
- * @param {number} [sellerId]
- * @param {string} [sellerKey]
+ * @param {GetPaymentOptions} opt
  * @return {Payment}
  */
 /**
@@ -18,31 +23,35 @@ const getProduct = require('lib/products/get');
  * @prop {Product} product
  * @prop {string} [method]
  * @prop {string} created
- * @prop {string} [paid]
+ * @prop {string} paid
  * @prop {string} [description]
  * @prop {object} [info]
+ * @prop {string} [email]
  */
-module.exports = async function(db, paymentId, sellerId, sellerKey) {
+module.exports = async function(db, opt) {
 
   /** @type {Payment} */
   let payment;
   let full = false;
 
-  // Only return full info if seller id/key provided and valid
   try {
-    await authorizeSeller(db, sellerId, sellerKey);
+    await authorizeSeller(db, opt.sellerId, opt.sellerKey);
 
-    [payment] = await db.query(
-      'SELECT * FROM payments WHERE id = ? AND seller_id = ?',
-      [paymentId, sellerId]
-    ),
+    [payment] = await db.query(`
+      SELECT * FROM payments
+      WHERE id = ? ${opt.full ? '' : 'AND seller_id = ?'}
+    `, [
+      opt.paymentId, opt.sellerId
+    ]),
     full = true;
   }
   catch (err) {
-    [payment] = await db.query(
-      'SELECT id, product_id, methods, created FROM payments WHERE id = ?',
-      [paymentId]
-    );
+    [payment] = await db.query(`
+      SELECT id, product_id, methods, created, paid
+      FROM payments WHERE id = ?
+    `, [
+      opt.paymentId
+    ]);
   }
 
   if (!payment) throw 'Could not find payment';
