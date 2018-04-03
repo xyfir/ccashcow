@@ -1,7 +1,12 @@
+const CoinPayments = require('coinpayments');
 const getPayment = require('lib/payments/get');
-const request = require('superagent');
 const CONFIG = require('constants/config');
 const MySQL = require('lib/MySQL');
+
+const coinpayments = new CoinPayments({
+  key: CONFIG.COINPAYMENTS.PUBLIC_KEY,
+  secret: CONFIG.COINPAYMENTS.PRIVATE_KEY
+});
 
 /**
  * `POST /api/payments/:payment/coinpayments`
@@ -33,22 +38,21 @@ module.exports = async function(req, res) {
 
     if (payment.paid !== null) throw 'Payment has already been paid';
 
-    const tx = await request
-      .post('https://www.coinpayments.net/api.php')
-      .send({
+    const tx = await new Promise((resolve, reject) =>
+      coinpayments.createTransaction({
         buyer_email: payment.email,
         currency1: 'USD',
         currency2: req.body.currency,
         ipn_url: `${CONFIG.URL}/api/payments/${paymentId}/coinpayments/complete`,
-        version: 1,
-        amount: payment.product.amount_cents / 100,
-        key: CONFIG.COINPAYMENTS.PUBLIC_KEY,
-        cmd: 'create_transaction'
-      });
+        amount: payment.product.amount_cents / 100
+      },
+      (err, result) => {
+        if (err) reject(err);
+        else resolve(result);
+      })
+    );
 
-    if (tx.body.error != 'ok') throw tx.body.error;
-
-    res.status(200).json(tx.body.result);
+    res.status(200).json(tx);
   }
   catch (err) {
     db.release();
