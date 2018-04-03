@@ -15,9 +15,11 @@ module.exports = async function(req, res) {
   const db = new MySQL;
 
   try {
-    const payment = await getPayment(
-      db, req.params.payment, req.query.seller_id, req.query.seller_key
-    );
+    const payment = await getPayment(db, {
+      sellerId: req.query.seller_id,
+      paymentId: req.params.payment,
+      sellerKey: req.query.seller_key
+    });
     db.release();
     res.status(200).json(payment);
   }
