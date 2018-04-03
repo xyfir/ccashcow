@@ -57,8 +57,9 @@ module.exports = async function(db, opt) {
 
   if (!payment) throw 'Could not find payment';
 
-  payment.methods = JSON.parse(payment.methods);
-  payment.product = await getProduct(db, payment.product_id);
+  payment.methods = JSON.parse(payment.methods),
+  payment.product = await getProduct(db, payment.product_id),
+  payment.redirect_url = payment.redirect_url.replace('PAYMENT_ID', payment.id);
   delete payment.product_id;
 
   if (full) payment.info = JSON.parse(payment.info);
