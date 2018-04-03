@@ -45,7 +45,7 @@ module.exports = async function(req, res) {
 
     db.release();
     res.status(200).json({
-      url: `${CONFIG.URL}/embed/?payment_id=${result.insertId}`
+      url: `${CONFIG.URL}/pay/?payment_id=${result.insertId}`
     });
   }
   catch (err) {

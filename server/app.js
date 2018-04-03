@@ -22,9 +22,9 @@ app.use(
 );
 
 /* Routes / Controllers */
-app.get('/embed', (req, res) => res.sendFile(__dirname + '/views/Embed.html'));
 app.use('/static', express.static(__dirname + '/static'));
 app.get('/admin', (req, res) => res.sendFile(__dirname + '/views/Admin.html'));
+app.get('/pay', (req, res) => res.sendFile(__dirname + '/views/Pay.html'));
 app.use('/api', require('./controllers/'));
 
 /* Start Server */

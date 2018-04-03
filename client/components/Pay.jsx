@@ -10,7 +10,7 @@ import STATUS from 'constants/status';
 import PayWithCoinPayments from 'components/pay/CoinPayments';
 import PayWithSquare from 'components/pay/Square';
 
-class Embed extends React.Component {
+class Pay extends React.Component {
 
   constructor(props) {
     super(props);
@@ -35,7 +35,7 @@ class Embed extends React.Component {
     const match = location.search.match(/payment_id=(\d+)/);
 
     request.get(`/api/payments/${+match[1]}`).end((err, res) => {
-      if (err) return this._communicate(STATUS.ERROR, err);
+      if (err) return history.back();
 
       res.body.methods = res.body.methods.map(m => {
         switch (m) {
@@ -65,16 +65,7 @@ class Embed extends React.Component {
 
   onSuccess() {
     this.setState({ errors: [] });
-    this._communicate(0);
-  }
-
-  /**
-   * @param {number} status
-   * @param {object} data
-   */
-  _communicate(status, data) {
-    console.log('_communicate()', status, data);
-    window.parent.postMessage({ xyPayments: true, status, data }, '*');
+    location.replace(this.state.payment.redirect_url);
   }
 
   render() {
@@ -84,14 +75,14 @@ class Embed extends React.Component {
 
     const form = (() => {
       switch (method) {
-        case 'coinpayments': return <PayWithCoinPayments Embed={this} />
-        case 'square': return <PayWithSquare Embed={this} />
+        case 'coinpayments': return <PayWithCoinPayments Pay={this} />
+        case 'square': return <PayWithSquare Pay={this} />
         default: return null
       }
     })();
 
     return (
-      <div className='embed-entry'>
+      <div className='pay-entry'>
         {payment.methods.length > 1 ? (
           <header className='method-selector'>
             <label>Payment Method</label>
@@ -116,4 +107,4 @@ class Embed extends React.Component {
 
 }
 
-render(<Embed />, document.getElementById('content'));
+render(<Pay />, document.getElementById('content'));

@@ -16,14 +16,14 @@ export default class PayWithCoinPayments extends React.Component {
 
   /** @param {string} currency */
   onPay(currency) {
-    const {Embed} = this.props;
-    const {id} = Embed.state.payment;
+    const {Pay} = this.props;
+    const {id} = Pay.state.payment;
 
     request
       .post(`/api/payments/${id}/coinpayments`)
       .send({ currency })
       .end((err, res) => {
-        if (err) return Embed.onError(res.body.message);
+        if (err) return Pay.onError(res.body.message);
 
         this.setState({ tx: res.body, view: currency });
 
@@ -31,7 +31,7 @@ export default class PayWithCoinPayments extends React.Component {
           .get(`/api/payments/${id}`)
           .end((err, res) => {
             console.log(err, res.body);
-            if (!err && res.body.paid !== null) Embed.onSuccess();
+            if (!err && res.body.paid !== null) Pay.onSuccess();
           }),
           30 * 1000
         );

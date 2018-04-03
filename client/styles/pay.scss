@@ -5,7 +5,7 @@ $md-secondary-color: $md-blue-grey-500;
 
 @include react-md-everything;
 
-div.embed-entry {
+div.pay-entry {
   >header.method-selector {
     display: flex;
     align-items: center;

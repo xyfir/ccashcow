@@ -18,8 +18,8 @@ export default class PayWithSquare extends React.Component {
    * @param {object} card
    */
   onPay(nonce, card) {
-    const {Embed} = this.props;
-    const {id} = Embed.state.payment;
+    const {Pay} = this.props;
+    const {id} = Pay.state.payment;
 
     request
       .post(`/api/payments/${id}/square`)
@@ -31,9 +31,9 @@ export default class PayWithSquare extends React.Component {
       })
       .end((err, res) => {
         if (err)
-          Embed.onError(res.body.message);
+          Pay.onError(res.body.message);
         else
-          Embed.onSuccess();
+          Pay.onSuccess();
       });
   }
 
@@ -45,7 +45,7 @@ export default class PayWithSquare extends React.Component {
    * @prop {string} field
    */
   onPayError(e) {
-    this.props.Embed.onError(e.map(_e => _e.message));
+    this.props.Pay.onError(e.map(_e => _e.message));
   }
 
   render() {

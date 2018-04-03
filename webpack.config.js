@@ -25,7 +25,7 @@ module.exports = {
 
   entry: {
     Admin: './client/components/Admin.jsx',
-    Embed: './client/components/Embed.jsx'
+    Pay: './client/components/Pay.jsx'
   },
 
   output: {

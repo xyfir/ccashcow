@@ -27,6 +27,7 @@ const getProduct = require('lib/products/get');
  * @prop {string} [description]
  * @prop {object} [info]
  * @prop {string} [email]
+ * @prop {string} redirect_url
  */
 module.exports = async function(db, opt) {
 
@@ -47,7 +48,7 @@ module.exports = async function(db, opt) {
   }
   catch (err) {
     [payment] = await db.query(`
-      SELECT id, product_id, methods, created, paid
+      SELECT id, product_id, methods, created, paid, redirect_url
       FROM payments WHERE id = ?
     `, [
       opt.paymentId
