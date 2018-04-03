@@ -1,4 +1,7 @@
+import 'babel-polyfill';
+
 import { SelectField } from 'react-md';
+import QueryString from 'query-string';
 import { render } from 'react-dom';
 import request from 'superagent';
 import React from 'react';
@@ -8,6 +11,7 @@ import STATUS from 'constants/status';
 
 // Components
 import PayWithCoinPayments from 'components/pay/CoinPayments';
+import PayWithSwiftDemand from 'components/pay/SwiftDemand';
 import PayWithSquare from 'components/pay/Square';
 
 class Pay extends React.Component {
@@ -27,14 +31,19 @@ class Pay extends React.Component {
        */
       method: null,
       /** @type {string[]} */
-      errors: []
+      errors: [],
+      /**
+       * Parsed `location.search`
+       * @type {object}
+       */
+      q: null
     };
   }
 
   componentWillMount() {
-    const match = location.search.match(/payment_id=(\d+)/);
+    const q = QueryString.parse(location.search);
 
-    request.get(`/api/payments/${+match[1]}`).end((err, res) => {
+    request.get(`/api/payments/${q.payment_id}`).end((err, res) => {
       if (err) return history.back();
 
       res.body.methods = res.body.methods.map(m => {
@@ -54,7 +63,11 @@ class Pay extends React.Component {
         }
       });
 
-      this.setState({ payment: res.body, method: res.body.methods[0].value });
+      this.setState({
+        q,
+        method: q.method || res.body.methods[0].value,
+        payment: res.body
+      });
     });
   }
 
@@ -77,6 +90,7 @@ class Pay extends React.Component {
       switch (method) {
         case 'coinpayments': return <PayWithCoinPayments Pay={this} />
         case 'square': return <PayWithSquare Pay={this} />
+        case 'swift': return <PayWithSwiftDemand Pay={this} />
         default: return null
       }
     })();
