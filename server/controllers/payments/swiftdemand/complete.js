@@ -22,7 +22,7 @@ module.exports = async function(req, res) {
   const db = new MySQL;
 
   try {
-    if (req.query.key != CONFIG.SWIFTDEMAND.key) throw 'Invalid request';
+    if (req.query.key != CONFIG.SWIFTDEMAND.KEY) throw 'Invalid request';
 
     const payment = await getPayment(db, { paymentId, full: true });
     if (payment.paid !== null) throw 'Payment has already been paid';
@@ -31,7 +31,7 @@ module.exports = async function(req, res) {
       UPDATE payments SET transaction = ?, method = ?, paid = NOW()
       WHERE id = ?
     `, [
-      req.body.txn_id, 'swiftdemand',
+      req.body.uuid, 'swiftdemand',
       paymentId
     ]);
     db.release();
