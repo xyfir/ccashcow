@@ -16,6 +16,7 @@
     "admyn": "^1.2.0",
     "app-module-path": "^2.2.0",
     "body-parser": "^1.18.2",
+    "coinpayments": "^1.1.6",
     "express": "^4.16.3",
     "mysql": "^2.15.0",
     "react": "^16.3.0",
