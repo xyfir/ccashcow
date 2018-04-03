@@ -1,4 +1,5 @@
 const authorizeSeller = require('lib/sellers/authorize');
+const CONFIG = require('constants/config');
 const MySQL = require('lib/MySQL');
 
 /**
@@ -10,11 +11,12 @@ const MySQL = require('lib/MySQL');
  * @prop {string} description
  * @prop {object} info
  * @prop {string} email
+ * @prop {string} redirect_url
  */
 /**
  * @typedef {object} ResponseBody
  * @prop {string} [message]
- * @prop {number} [id]
+ * @prop {number} [url]
  */
 /**
  * `POST /api/payments`
@@ -32,6 +34,7 @@ module.exports = async function(req, res) {
     const result = db.query(`
       INSERT INTO payments SET ?
     `, {
+      redirect_url: req.body.redirect_url,
       description: req.body.description,
       product_id: req.body.product_id,
       seller_id: req.body.seller_id,
@@ -41,7 +44,9 @@ module.exports = async function(req, res) {
     });
 
     db.release();
-    res.status(200).json({ id: result.insertId });
+    res.status(200).json({
+      url: `${CONFIG.URL}/embed/?payment_id=${result.insertId}`
+    });
   }
   catch (err) {
     db.release();
