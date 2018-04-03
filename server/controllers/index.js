@@ -12,5 +12,13 @@ router.post(
   '/payments/:payment/coinpayments/complete',
   require('./payments/coinpayments/complete')
 );
+router.post(
+  '/payments/:payment/swiftdemand',
+  require('./payments/swiftdemand/create')
+);
+router.post(
+  '/payments/:payment/swiftdemand/complete',
+  require('./payments/swiftdemand/complete')
+);
 
 module.exports = router;
