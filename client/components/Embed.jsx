@@ -7,6 +7,7 @@ import React from 'react';
 import STATUS from 'constants/status';
 
 // Components
+import PayWithCoinPayments from 'components/pay/CoinPayments';
 import PayWithSquare from 'components/pay/Square';
 
 class Embed extends React.Component {
@@ -36,16 +37,14 @@ class Embed extends React.Component {
     request.get(`/api/payments/${+match[1]}`).end((err, res) => {
       if (err) return this._communicate(STATUS.ERROR, err);
 
-      /** @type {string} */
-      const method = res.body.methods[0];
-
       res.body.methods = res.body.methods.map(m => {
         switch (m) {
           case 'card':
           case 'square':
             return { label: 'Credit Card', value: 'square' };
           case 'crypto':
-            return { label: 'Cryptocurrency', value: 'crypto' };
+          case 'coinpayments':
+            return { label: 'Cryptocurrency', value: 'coinpayments' };
           case 'swift':
             return { label: 'SwiftDemand', value: 'swift' };
           case 'inapp':
@@ -55,7 +54,7 @@ class Embed extends React.Component {
         }
       });
 
-      this.setState({ payment: res.body, method });
+      this.setState({ payment: res.body, method: res.body.methods[0].value });
     });
   }
 
@@ -85,6 +84,7 @@ class Embed extends React.Component {
 
     const form = (() => {
       switch (method) {
+        case 'coinpayments': return <PayWithCoinPayments Embed={this} />
         case 'square': return <PayWithSquare Embed={this} />
         default: return null
       }
