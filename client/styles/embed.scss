@@ -39,4 +39,22 @@ div.embed-entry {
       }
     }
   }
+
+  >section.pay-with-coinpayments {
+    >div.view-currency {
+      >header {
+        margin: 1.5em 0;
+        display: flex;
+        align-items: center;
+
+        >button {
+          margin-right: 0.5em;
+        }
+      }
+
+      >img {
+        margin-top: 2em;
+      }
+    }
+  }
 }
