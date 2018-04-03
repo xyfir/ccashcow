@@ -83,7 +83,7 @@ export default class SquareCardForm extends React.Component {
           raised primary
           iconChildren='payment'
           onClick={() => this.onGenerateNonce()}
-        >Pay</Button>
+        >Pay ${this.props.amount} USD</Button>
       </div>
     );
   }
