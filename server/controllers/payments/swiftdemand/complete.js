@@ -31,7 +31,7 @@ module.exports = async function(req, res) {
       UPDATE payments SET transaction = ?, method = ?, paid = NOW()
       WHERE id = ?
     `, [
-      req.body.txn_id, 'swift',
+      req.body.txn_id, 'swiftdemand',
       paymentId
     ]);
     db.release();

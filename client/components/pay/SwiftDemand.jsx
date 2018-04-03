@@ -11,7 +11,7 @@ export default class PayWithSwiftDemand extends React.Component {
   async componentDidMount() {
     const {Pay} = this.props;
 
-    if (Pay.state.q.method != 'swift') return;
+    if (Pay.state.q.method != 'swiftdemand') return;
 
     await this._checkIfPaid();
     this.interval = setInterval(() => this._checkIfPaid(), 3000);

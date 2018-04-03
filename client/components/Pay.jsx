@@ -54,8 +54,8 @@ class Pay extends React.Component {
           case 'crypto':
           case 'coinpayments':
             return { label: 'Cryptocurrency', value: 'coinpayments' };
-          case 'swift':
-            return { label: 'SwiftDemand', value: 'swift' };
+          case 'swiftdemand':
+            return { label: 'SwiftDemand', value: 'swiftdemand' };
           case 'inapp':
             return { label: 'In-App Purchase', value: 'inapp' };
           default:
@@ -89,8 +89,8 @@ class Pay extends React.Component {
     const form = (() => {
       switch (method) {
         case 'coinpayments': return <PayWithCoinPayments Pay={this} />
+        case 'swiftdemand': return <PayWithSwiftDemand Pay={this} />
         case 'square': return <PayWithSquare Pay={this} />
-        case 'swift': return <PayWithSwiftDemand Pay={this} />
         default: return null
       }
     })();
