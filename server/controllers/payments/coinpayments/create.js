@@ -43,7 +43,8 @@ module.exports = async function(req, res) {
         buyer_email: payment.email,
         currency1: 'USD',
         currency2: req.body.currency,
-        ipn_url: `${CONFIG.URL}/api/payments/${paymentId}/coinpayments/complete`,
+        ipn_url:
+          `${CONFIG.URL.MAIN}/api/payments/${paymentId}/coinpayments/complete`,
         amount: payment.product.amount_cents / 100
       },
       (err, result) => {

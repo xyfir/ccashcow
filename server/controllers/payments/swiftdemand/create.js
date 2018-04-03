@@ -32,10 +32,10 @@ module.exports = async function(req, res) {
       .send({
         product_id: payment.product.swiftdemand_product_id,
         redirect_url:
-          `${CONFIG.URL}/pay?payment_id=${paymentId}&method=swift`,
+          `${CONFIG.URL.MAIN}/pay?payment_id=${paymentId}&method=swift`,
         callback_url:
-          `${CONFIG.URL}/api/payments/${paymentId}/swiftdemand/complete` +
-          `?key=${CONFIG.SWIFTDEMAND.KEY}`,
+          `${CONFIG.URL.CALLBACK}/api/payments/${paymentId}/swiftdemand` +
+          `/complete?key=${CONFIG.SWIFTDEMAND.KEY}`,
         sender_swift_name: req.body.swiftId
       });
 
