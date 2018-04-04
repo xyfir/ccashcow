@@ -20,5 +20,6 @@ router.post(
   '/payments/:payment/swiftdemand/complete',
   require('./payments/swiftdemand/complete')
 );
+router.post('/payments/:payment/iap', require('./payments/iap'));
 
 module.exports = router;

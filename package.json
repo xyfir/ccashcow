@@ -18,6 +18,7 @@
     "body-parser": "^1.18.2",
     "coinpayments": "^1.1.6",
     "express": "^4.16.3",
+    "in-app-purchase": "^1.8.9",
     "mysql": "^2.15.0",
     "query-string": "^6.0.0",
     "react": "^16.3.0",
