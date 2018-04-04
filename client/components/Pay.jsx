@@ -43,7 +43,7 @@ class Pay extends React.Component {
   componentWillMount() {
     const q = QueryString.parse(location.search);
 
-    request.get(`/api/payments/${q.payment_id}`).end((err, res) => {
+    request.get(`/api/payments/${q.payment_id}`).end(async (err, res) => {
       if (err) return history.back();
 
       res.body.methods = res.body.methods.map(m => {
@@ -56,12 +56,25 @@ class Pay extends React.Component {
             return { label: 'Cryptocurrency', value: 'coinpayments' };
           case 'swiftdemand':
             return { label: 'SwiftDemand', value: 'swiftdemand' };
-          case 'inapp':
-            return { label: 'In-App Purchase', value: 'inapp' };
+          case 'iap':
+            return { label: 'In-App Purchase', value: 'iap' };
           default:
             return null;
         }
       });
+
+      // Wait for Cordova API to be available if they're needed
+      // Seller should not have supplied IAP as a method if not available
+      if (res.body.methods.findIndex(m => m.value == 'iap') > -1) {
+        await new Promise(resolve => {
+          const interval = setInterval(() => {
+            if (window.cordova) {
+              clearInterval(interval);
+              resolve();
+            }
+          }, 150);
+        });
+      }
 
       this.setState({
         q,
