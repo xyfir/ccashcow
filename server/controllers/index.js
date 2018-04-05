@@ -13,6 +13,14 @@ router.post(
   require('./payments/coinpayments/complete')
 );
 router.post(
+  '/payments/:payment/coinbase',
+  require('./payments/coinbase/create')
+);
+router.post(
+  '/payments/null/coinbase/complete',
+  require('./payments/coinbase/complete')
+);
+router.post(
   '/payments/:payment/swiftdemand',
   require('./payments/swiftdemand/create')
 );
