@@ -1,4 +1,4 @@
-const getProduct = require('lib/products/get');
+const getPayment = require('lib/payments/get');
 const request = require('superagent');
 const CONFIG = require('constants/config');
 const MySQL = require('lib/MySQL');
@@ -27,16 +27,16 @@ module.exports = async function(req, res) {
   const db = new MySQL;
 
   try {
-    const [payment] = await db.query(`
-      SELECT product_id, email, description FROM payments
-      WHERE id = ? AND paid IS NULL
-    `, [
-      req.params.payment
-    ]);
+    const payment = await getPayment(db, {
+      paymentId: req.params.payment,
+      full: true
+    });
 
-    if (!payment) throw 'Could not find valid payment';
+    if (!payment)
+      throw 'Could not find valid payment';
+    else if (payment.paid !== null)
+      throw 'Payment is already paid';
 
-    const product = await getProduct(db, payment.product_id);
     const charge = await request
       .post(
         `https://connect.squareup.com/v2/locations/` +
@@ -51,7 +51,7 @@ module.exports = async function(req, res) {
           country: req.body.country
         },
         amount_money: {
-          amount: product.amount_cents,
+          amount: payment.amount || payment.product.amount_cents,
           currency: 'USD'
         },
         card_nonce: req.body.nonce,

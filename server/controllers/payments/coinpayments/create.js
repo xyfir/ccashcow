@@ -45,7 +45,7 @@ module.exports = async function(req, res) {
         currency2: req.body.currency,
         ipn_url:
           `${CONFIG.URL.MAIN}/api/payments/${paymentId}/coinpayments/complete`,
-        amount: payment.product.amount_cents / 100
+        amount: (payment.amount || payment.product.amount_cents) / 100
       },
       (err, result) => {
         if (err) reject(err);

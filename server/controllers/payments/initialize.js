@@ -7,11 +7,12 @@ const MySQL = require('lib/MySQL');
  * @prop {number} seller_id
  * @prop {string} seller_key
  * @prop {string[]} methods
- * @prop {number} product_id
+ * @prop {number} [product_id]
  * @prop {string} description
  * @prop {object} info
  * @prop {string} email
  * @prop {string} redirect_url
+ * @prop {number} [amount] USD cents
  */
 /**
  * @typedef {object} ResponseBody
@@ -31,14 +32,21 @@ module.exports = async function(req, res) {
   try {
     await authorizeSeller(db, req.body.seller_id, req.body.seller_key);
 
+    if (
+      !req.body.product_id &&
+      (req.body.methods.indexOf('swiftdemand') > -1 ||
+        req.body.methods.indexOf('iap') > -1)
+    ) throw 'SwiftDemand and IAP payments require a product';
+
     const result = db.query(`
       INSERT INTO payments SET ?
     `, {
       redirect_url: req.body.redirect_url,
       description: req.body.description,
       product_id: req.body.product_id,
-      seller_id: req.body.seller_id,
+      seller_id: req.body.seller_id || null,
       methods: JSON.stringify(req.body.methods),
+      amount: req.body.amount || null,
       email: req.body.email,
       info: JSON.stringify(req.body.info)
     });

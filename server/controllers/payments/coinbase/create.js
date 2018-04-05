@@ -25,7 +25,7 @@ module.exports = async function(req, res) {
 
     if (payment.paid !== null) throw 'Payment has already been paid';
 
-    const amount = payment.product.amount_cents / 100;
+    const amount = (payment.amount || payment.product.amount_cents) / 100;
     const charge = await request
       .post('https://api.commerce.coinbase.com/charges')
       .set('X-CC-Version', '2018-03-22')

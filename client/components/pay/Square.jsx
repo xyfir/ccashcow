@@ -49,6 +49,8 @@ export default class PayWithSquare extends React.Component {
   }
 
   render() {
+    const {payment} = this.props.Pay.state;
+
     return (
       <section className='pay-with-square'>
         <input
@@ -64,7 +66,7 @@ export default class PayWithSquare extends React.Component {
 
         <CardForm
           onPay={(n, c) => this.onPay(n, c)}
-          amount={this.props.Pay.state.payment.product.amount_cents / 100}
+          amount={(payment.amount || payment.product.amount_cents) / 100}
           onPayError={e => this.onPayError(e)}
         />
       </section>

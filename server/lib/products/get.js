@@ -2,7 +2,7 @@
  * Returns a product's full info depending.
  * @param {MySQL} db
  * @param {number} id
- * @return {Product}
+ * @return {Product|null}
  */
 /**
  * @typedef {object} Product
@@ -14,6 +14,8 @@
  * @prop {string} [coinbase_checkout_id]
  */
 module.exports = async function(db, id) {
+
+  if (!id) return null;
 
   const [row] = await db.query('SELECT * FROM products WHERE id = ?', [id]);
   if (!row) throw 'Could not find product';
