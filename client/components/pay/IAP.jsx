@@ -42,6 +42,9 @@ export default class PayWithInAppPurchase extends React.Component {
     // Purchase is entirely complete
     window.store.when(id).finished(() => Pay.onSuccess());
 
+    // Render error messages
+    window.store.error(err => Pay.onError(err.message));
+
     // Load full info for registered product
     window.store.refresh();
   }
@@ -73,8 +76,9 @@ export default class PayWithInAppPurchase extends React.Component {
 
     if (
       !product ||
-      product.state === store.INVALID ||
-      product.state == store.REGISTERED
+      !window.store ||
+      product.state == window.store.INVALID ||
+      product.state == window.store.REGISTERED
     ) return null;
 
     return (
