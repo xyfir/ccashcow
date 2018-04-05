@@ -5,7 +5,22 @@ $md-secondary-color: $md-blue-grey-500;
 
 @include react-md-everything;
 
+body {
+  margin: 0;
+}
+
+main#content {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 div.pay-entry {
+  max-width: 768px;
+  margin: 1em;
+
   >header.method-selector {
     display: flex;
     align-items: center;
