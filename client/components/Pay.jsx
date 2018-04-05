@@ -6,13 +6,11 @@ import { render } from 'react-dom';
 import request from 'superagent';
 import React from 'react';
 
-// Constants
-import STATUS from 'constants/status';
-
 // Components
 import PayWithInAppPurchase from 'components/pay/IAP';
 import PayWithCoinPayments from 'components/pay/CoinPayments';
 import PayWithSwiftDemand from 'components/pay/SwiftDemand';
+import PayWithCoinbase from 'components/pay/Coinbase';
 import PayWithSquare from 'components/pay/Square';
 
 class Pay extends React.Component {
@@ -53,6 +51,8 @@ class Pay extends React.Component {
           case 'square':
             return { label: 'Credit Card', value: 'square' };
           case 'crypto':
+          case 'coinbase':
+            return { label: 'Cryptocurrency', value: 'coinbase' };
           case 'coinpayments':
             return { label: 'Cryptocurrency', value: 'coinpayments' };
           case 'swiftdemand':
@@ -104,6 +104,7 @@ class Pay extends React.Component {
       switch (method) {
         case 'coinpayments': return <PayWithCoinPayments Pay={this} />
         case 'swiftdemand': return <PayWithSwiftDemand Pay={this} />
+        case 'coinbase': return <PayWithCoinbase Pay={this} />
         case 'square': return <PayWithSquare Pay={this} />
         case 'iap': return <PayWithInAppPurchase Pay={this} />
         default: return null
