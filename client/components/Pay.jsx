@@ -10,6 +10,7 @@ import React from 'react';
 import STATUS from 'constants/status';
 
 // Components
+import PayWithInAppPurchase from 'components/pay/IAP';
 import PayWithCoinPayments from 'components/pay/CoinPayments';
 import PayWithSwiftDemand from 'components/pay/SwiftDemand';
 import PayWithSquare from 'components/pay/Square';
@@ -104,6 +105,7 @@ class Pay extends React.Component {
         case 'coinpayments': return <PayWithCoinPayments Pay={this} />
         case 'swiftdemand': return <PayWithSwiftDemand Pay={this} />
         case 'square': return <PayWithSquare Pay={this} />
+        case 'iap': return <PayWithInAppPurchase Pay={this} />
         default: return null
       }
     })();
