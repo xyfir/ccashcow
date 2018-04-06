@@ -13,6 +13,7 @@ const MySQL = require('lib/MySQL');
  * @prop {string} email
  * @prop {string} redirect_url
  * @prop {number} [amount] USD cents
+ * @prop {number} [discount] 10 == 10%
  */
 /**
  * @typedef {object} ResponseBody
@@ -45,6 +46,7 @@ module.exports = async function(req, res) {
       description: req.body.description,
       product_id: req.body.product_id,
       seller_id: req.body.seller_id || null,
+      discount: req.body.discount || null,
       methods: JSON.stringify(req.body.methods),
       amount: req.body.amount || null,
       email: req.body.email,

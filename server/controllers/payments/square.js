@@ -51,7 +51,7 @@ module.exports = async function(req, res) {
           country: req.body.country
         },
         amount_money: {
-          amount: payment.amount || payment.product.amount_cents,
+          amount: payment.totalPrice.usd_cents,
           currency: 'USD'
         },
         card_nonce: req.body.nonce,
