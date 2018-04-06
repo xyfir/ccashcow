@@ -44,6 +44,7 @@ class Pay extends React.Component {
 
     request.get(`/api/payments/${q.payment_id}`).end(async (err, res) => {
       if (err) return history.back();
+      if (res.body.paid !== null) return location.replace(res.body.redirect_url);
 
       res.body.methods = res.body.methods.map(m => {
         switch (m) {
