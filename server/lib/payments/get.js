@@ -29,6 +29,7 @@ const getProduct = require('lib/products/get');
  * @prop {string} [email]
  * @prop {string} redirect_url
  * @prop {number} [amount]
+ * @prop {boolean} [fulfilled]
  */
 module.exports = async function(db, opt) {
 
@@ -45,7 +46,8 @@ module.exports = async function(db, opt) {
     `, [
       opt.paymentId, opt.sellerId
     ]),
-    full = true;
+    full = true,
+    payment.fulfilled = !!payment.fulfilled;
   }
   catch (err) {
     [payment] = await db.query(`
