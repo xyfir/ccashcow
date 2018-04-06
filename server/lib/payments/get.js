@@ -35,21 +35,24 @@ module.exports = async function(db, opt) {
 
   /** @type {Payment} */
   let payment;
-  let full = false;
 
-  try {
+  // Load full payment data if request is authorized for this payment
+  if (opt.sellerId && opt.sellerKey) {
     await authorizeSeller(db, opt.sellerId, opt.sellerKey);
 
-    [payment] = await db.query(`
-      SELECT * FROM payments
-      WHERE id = ? ${opt.full ? '' : 'AND seller_id = ?'}
-    `, [
-      opt.paymentId, opt.sellerId
-    ]),
-    full = true,
-    payment.fulfilled = !!payment.fulfilled;
+    [payment] = await db.query(
+      'SELECT * FROM payments WHERE id = ? AND seller_id = ?',
+      [opt.paymentId, opt.sellerId]
+    );
   }
-  catch (err) {
+  // Load full paynent data
+  else if (opt.full) {
+    [payment] = await db.query(
+      'SELECT * FROM payments WHERE id = ?', [opt.paymentId]
+    );
+  }
+  // Load public data for payment
+  else {
     [payment] = await db.query(`
       SELECT id, product_id, methods, created, paid, redirect_url, amount
       FROM payments WHERE id = ?
@@ -60,12 +63,15 @@ module.exports = async function(db, opt) {
 
   if (!payment) throw 'Could not find payment';
 
+  if (opt.full || (opt.sellerId && opt.sellerKey)) {
+    payment.fulfilled = !!payment.fulfilled,
+    payment.info = JSON.parse(payment.info);
+  }
+
   payment.methods = JSON.parse(payment.methods),
   payment.product = await getProduct(db, payment.product_id),
   payment.redirect_url = payment.redirect_url.replace('PAYMENT_ID', payment.id);
   delete payment.product_id;
-
-  if (full) payment.info = JSON.parse(payment.info);
 
   return payment;
 
