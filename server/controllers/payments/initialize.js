@@ -38,7 +38,7 @@ module.exports = async function(req, res) {
         req.body.methods.indexOf('iap') > -1)
     ) throw 'SwiftDemand and IAP payments require a product';
 
-    const result = db.query(`
+    const result = await db.query(`
       INSERT INTO payments SET ?
     `, {
       redirect_url: req.body.redirect_url,
