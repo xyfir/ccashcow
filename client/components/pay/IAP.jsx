@@ -20,9 +20,12 @@ export default class PayWithInAppPurchase extends React.Component {
 
   componentDidMount() {
     const {Pay} = this.props;
-    const {iap_id: id, iap_type: type} = Pay.state.payment.product;
+    const {iap_id: id, iap_type} = Pay.state.payment.product;
 
     // Register product
+    const type = iap_type[
+      window.device.platform == 'Android' ? 'android' : 'apple'
+    ];
     window.store.register({ id, type });
 
     // Update product in state when loaded
