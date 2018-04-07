@@ -62,7 +62,7 @@ export default class PayWithSwiftDemand extends React.Component {
           primary raised
           onClick={() => this.onPay()}
         >
-          Pay {payment.totalPrice.swifts} SFT
+          Pay {this.props.Pay.state.payment.totalPrice.swifts} SFT
         </Button>
       </section>
     );
