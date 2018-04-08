@@ -3,7 +3,7 @@ const CONFIG = require('constants/config');
 const MySQL = require('lib/MySQL');
 const iap = require('in-app-purchase');
 
-const testing = CONFIG.ENVIRONMENT == 'production';
+const testing = CONFIG.ENVIRONMENT == 'development';
 
 /**
  * `POST /api/payments/:payment/iap`
@@ -37,12 +37,18 @@ const testing = CONFIG.ENVIRONMENT == 'production';
       test: testing
     });
 
+    const store = req.body.type == 'ios-appstore' ? iap.APPLE : iap.GOOGLE;
+    const receipt = store == iap.APPLE
+      ? req.body.appStoreReceipt
+      // This *should* work but Android has not been tested
+      : {receipt: req.body.receipt, signature: req.body.signature};
+
     // Validate receipt
     await new Promise((resolve, reject) =>
       iap.setup(err => {
         if (err) return reject('Could not validate purchase');
 
-        iap.validate(req.body, (err, response) => {
+        iap.validate(store, receipt, (err, response) => {
           if (err)
             return reject('Could not validate purchase');
           if (!iap.isValidated(response))
