@@ -17,7 +17,7 @@ const MySQL = require('lib/MySQL');
  * @typedef {object} ResponseBody
  * @prop {string} [message]
  */
-export async function api_completeCoinbasePayment(req, res) {
+export async function api_finishCoinbasePayment(req, res) {
   const { paymentId } = req.body.event.data.metadata;
   const db = new MySQL();
 

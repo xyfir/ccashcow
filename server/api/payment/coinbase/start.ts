@@ -14,7 +14,7 @@ const MySQL = require('lib/MySQL');
  * @prop {string} [message]
  * @prop {string} [url]
  */
-export async function api_createCoinbasePayment(req, res) {
+export async function api_startCoinbasePayment(req, res) {
   const paymentId = req.params.payment;
   const db = new MySQL();
 

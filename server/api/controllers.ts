@@ -1,7 +1,5 @@
-export * from './payments/coinbase/complete';
-export * from './payments/coinbase/create';
+export * from './payment/coinbase/finish';
+export * from './payment/coinbase/start';
 
-export * from './payments/fulfill';
-export * from './payments/get';
-export * from './payments/initialize';
-export * from './payments/square';
+export * from './payment/get';
+export * from './payment/square';
