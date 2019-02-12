@@ -6,14 +6,14 @@
   "scripts": {
     "build": "npm run build:css & npm run build:js",
     "build:js": "webpack-cli",
-    "build:css": "npm run build:admin-css & npm run build:pay-css",
-    "build:admin-css": "node-sass --output-style compressed web/styles/admin.scss server/static/css/admin.css",
-    "build:pay-css": "node-sass --output-style compressed web/styles/pay.scss server/static/css/pay.css"
+    "build:css": "node-sass --output-style compressed web/styles/pay.scss server/static/css/pay.css"
   },
-  "author": "Xyfir, LLC <contact@xyfir.com> (https://xyfir.com/)",
-  "license": "",
+  "author": "Xyfir, LLC <contact@xyfir.com> (https://www.xyfir.com)",
+  "license": "MIT",
+  "prettier": {
+    "singleQuote": true
+  },
   "dependencies": {
-    "admyn": "^1.2.0",
     "app-module-path": "^2.2.0",
     "body-parser": "^1.18.2",
     "coinpayments": "^1.1.6",

@@ -20,11 +20,9 @@ if (isProd) {
 }
 
 module.exports = {
-
   mode: config.ENVIRONMENT,
 
   entry: {
-    Admin: './web/components/Admin.jsx',
     Pay: './web/components/Pay.jsx'
   },
 
@@ -34,10 +32,7 @@ module.exports = {
   },
 
   resolve: {
-    modules: [
-      path.resolve(__dirname, 'web'),
-      'node_modules'
-    ],
+    modules: [path.resolve(__dirname, 'web'), 'node_modules'],
     alias: {
       server: __dirname
     },
@@ -45,19 +40,18 @@ module.exports = {
   },
 
   module: {
-    rules: [{
-      test: /\.jsx?$/,
-      loader: 'babel-loader',
-      include: [
-        path.resolve(__dirname, 'web')
-      ],
-      exclude: /node_modules/,
-      options: {
-        presets: ['env', 'react']
+    rules: [
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader',
+        include: [path.resolve(__dirname, 'web')],
+        exclude: /node_modules/,
+        options: {
+          presets: ['env', 'react']
+        }
       }
-    }]
+    ]
   },
 
   plugins
-
 };

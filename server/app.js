@@ -3,7 +3,6 @@ require('app-module-path').addPath(__dirname);
 const express = require('express');
 const config = require('constants/config');
 const parser = require('body-parser');
-const admyn = require('admyn/server');
 
 const app = express();
 
@@ -11,19 +10,8 @@ const app = express();
 app.use(parser.json({ limit: '5mb' }));
 app.use(parser.urlencoded({ extended: true, limit: '5mb' }));
 
-/* Admyn */
-app.use(
-  '/admyn-bmWjQ5O3q9RCoP60YPb1Xu8mCsUVTCv5pHbtVC13dPDN3Fhp2w8l',
-  function(req, res, next) {
-    req.admyn = { database: config.MYSQL };
-    next();
-  },
-  admyn()
-);
-
 /* Routes / Controllers */
 app.use('/static', express.static(__dirname + '/static'));
-app.get('/admin', (req, res) => res.sendFile(__dirname + '/views/Admin.html'));
 app.get('/pay', (req, res) => res.sendFile(__dirname + '/views/Pay.html'));
 app.use('/api', require('./controllers/'));
 
