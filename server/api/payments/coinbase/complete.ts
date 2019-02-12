@@ -17,10 +17,9 @@ const MySQL = require('lib/MySQL');
  * @typedef {object} ResponseBody
  * @prop {string} [message]
  */
-module.exports = async function(req, res) {
-
-  const {paymentId} = req.body.event.data.metadata;
-  const db = new MySQL;
+export async function api_completeCoinbasePayment(req, res) {
+  const { paymentId } = req.body.event.data.metadata;
+  const db = new MySQL();
 
   try {
     if (req.body.event.data.metadata.key != CONFIG.COINBASE.WEBHOOK_SECRET)
@@ -29,20 +28,18 @@ module.exports = async function(req, res) {
     const payment = await getPayment(db, { paymentId, full: true });
     if (payment.paid !== null) throw 'Payment has already been paid';
 
-    await db.query(`
+    await db.query(
+      `
       UPDATE payments SET transaction = ?, method = ?, paid = NOW()
       WHERE id = ?
-    `, [
-      req.body.event.id, 'coinbase',
-      paymentId
-    ]);
+    `,
+      [req.body.event.id, 'coinbase', paymentId]
+    );
     db.release();
 
-    res.status(200).json({ });
-  }
-  catch (err) {
+    res.status(200).json({});
+  } catch (err) {
     db.release();
     res.status(400).json({ message: err });
   }
-
 }

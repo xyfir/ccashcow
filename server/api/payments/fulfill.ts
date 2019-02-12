@@ -14,9 +14,8 @@ const MySQL = require('lib/MySQL');
  * @param {number} req.body.seller_id
  * @param {string} req.body.seller_key
  */
-module.exports = async function(req, res) {
-
-  const db = new MySQL;
+export async function api_fulfillPayment(req, res) {
+  const db = new MySQL();
 
   try {
     await authorizeSeller(db, req.body.seller_id, req.body.seller_key);
@@ -29,11 +28,9 @@ module.exports = async function(req, res) {
     if (!result.affectedRows) throw 'Could not fulfill payment';
 
     db.release();
-    res.status(200).json({ });
-  }
-  catch (err) {
+    res.status(200).json({});
+  } catch (err) {
     db.release();
     res.status(400).json({ message: err });
   }
-
 }

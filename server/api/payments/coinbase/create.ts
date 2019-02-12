@@ -14,10 +14,9 @@ const MySQL = require('lib/MySQL');
  * @prop {string} [message]
  * @prop {string} [url]
  */
-module.exports = async function(req, res) {
-
+export async function api_createCoinbasePayment(req, res) {
   const paymentId = req.params.payment;
-  const db = new MySQL;
+  const db = new MySQL();
 
   try {
     const payment = await getPayment(db, { paymentId, full: true });
@@ -41,16 +40,15 @@ module.exports = async function(req, res) {
           currency: 'USD'
         },
         description: payment.description,
-        redirect_url:
-          `${CONFIG.URL.MAIN}/pay?payment_id=${paymentId}&method=coinbase`,
+        redirect_url: `${
+          CONFIG.URL.MAIN
+        }/pay?payment_id=${paymentId}&method=coinbase`,
         pricing_type: 'fixed_price'
       });
 
     res.status(200).json({ url: charge.body.data.hosted_url });
-  }
-  catch (err) {
+  } catch (err) {
     db.release();
     res.status(400).json({ message: err });
   }
-
 }

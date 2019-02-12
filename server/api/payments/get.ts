@@ -10,9 +10,8 @@ const MySQL = require('lib/MySQL');
  * @param {number} req.query.seller_id
  * @param {string} req.query.seller_key
  */
-module.exports = async function(req, res) {
-
-  const db = new MySQL;
+export async function api_getPayment(req, res) {
+  const db = new MySQL();
 
   try {
     const payment = await getPayment(db, {
@@ -22,10 +21,8 @@ module.exports = async function(req, res) {
     });
     db.release();
     res.status(200).json(payment);
-  }
-  catch (err) {
+  } catch (err) {
     db.release();
     res.status(400).json({ message: err });
   }
-
 }

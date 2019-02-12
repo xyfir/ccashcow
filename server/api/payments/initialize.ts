@@ -26,9 +26,8 @@ const MySQL = require('lib/MySQL');
  * @param {RequestBody} req.body
  * @param {object} res
  */
-module.exports = async function(req, res) {
-
-  const db = new MySQL;
+export async function api_initializePayment(req, res) {
+  const db = new MySQL();
 
   try {
     await authorizeSeller(db, req.body.seller_id, req.body.seller_key);
@@ -37,30 +36,32 @@ module.exports = async function(req, res) {
       !req.body.product_id &&
       (req.body.methods.indexOf('swiftdemand') > -1 ||
         req.body.methods.indexOf('iap') > -1)
-    ) throw 'SwiftDemand and IAP payments require a product';
+    )
+      throw 'SwiftDemand and IAP payments require a product';
 
-    const result = await db.query(`
+    const result = await db.query(
+      `
       INSERT INTO payments SET ?
-    `, {
-      redirect_url: req.body.redirect_url,
-      description: req.body.description,
-      product_id: req.body.product_id,
-      seller_id: req.body.seller_id || null,
-      discount: req.body.discount || null,
-      methods: JSON.stringify(req.body.methods),
-      amount: req.body.amount || null,
-      email: req.body.email,
-      info: JSON.stringify(req.body.info)
-    });
+    `,
+      {
+        redirect_url: req.body.redirect_url,
+        description: req.body.description,
+        product_id: req.body.product_id,
+        seller_id: req.body.seller_id || null,
+        discount: req.body.discount || null,
+        methods: JSON.stringify(req.body.methods),
+        amount: req.body.amount || null,
+        email: req.body.email,
+        info: JSON.stringify(req.body.info)
+      }
+    );
 
     db.release();
     res.status(200).json({
       url: `${CONFIG.URL.MAIN}/pay/?payment_id=${result.insertId}`
     });
-  }
-  catch (err) {
+  } catch (err) {
     db.release();
     res.status(400).json({ message: err });
   }
-
 }

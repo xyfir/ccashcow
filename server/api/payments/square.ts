@@ -22,9 +22,8 @@ const MySQL = require('lib/MySQL');
  * @param {number} req.params.payment
  * @param {object} res
  */
-module.exports = async function(req, res) {
-
-  const db = new MySQL;
+export async function api_squarePayment(req, res) {
+  const db = new MySQL();
 
   try {
     const payment = await getPayment(db, {
@@ -32,15 +31,13 @@ module.exports = async function(req, res) {
       full: true
     });
 
-    if (!payment)
-      throw 'Could not find valid payment';
-    else if (payment.paid !== null)
-      throw 'Payment is already paid';
+    if (!payment) throw 'Could not find valid payment';
+    else if (payment.paid !== null) throw 'Payment is already paid';
 
     const charge = await request
       .post(
         `https://connect.squareup.com/v2/locations/` +
-        `${CONFIG.SQUARE.LOCATION_KEY}/transactions`
+          `${CONFIG.SQUARE.LOCATION_KEY}/transactions`
       )
       .set('Authorization', `Bearer ${CONFIG.SQUARE.ACCESS_TOKEN}`)
       .send({
@@ -61,23 +58,21 @@ module.exports = async function(req, res) {
         buyer_email_address: payment.email
       });
 
-    const result = await db.query(`
+    const result = await db.query(
+      `
       UPDATE payments SET
         paid = NOW(), transaction = ?, method = ?
       WHERE id = ?
-    `, [
-      charge.body.transaction.id, 'square',
-      req.params.payment
-    ]);
+    `,
+      [charge.body.transaction.id, 'square', req.params.payment]
+    );
 
     if (!result.affectedRows) throw 'Could not complete payment';
 
     db.release();
-    res.status(200).json({ });
-  }
-  catch (err) {
+    res.status(200).json({});
+  } catch (err) {
     db.release();
     res.status(400).json({ message: err });
   }
-
 }
