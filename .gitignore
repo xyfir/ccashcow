@@ -1,3 +1,5 @@
-server/static/
 node_modules/
 config.js
+config.ts
+coverage/
+dist/
