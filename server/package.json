@@ -1,0 +1,36 @@
+{
+  "name": "rich-cow-server",
+  "version": "2.0.0-alpha.0",
+  "description": "Dead simple user payment system so easy a cow could do it.",
+  "main": "dist/app.js",
+  "scripts": {
+    "watch-coverage": "npm run coverage -- --watch",
+    "watch-build": "npm run build -- -w",
+    "watch-test": "npm run test -- --watch",
+    "coverage": "npm run test -- --coverage",
+    "build": "tsc -p ./",
+    "start": "node dist/app",
+    "test": "jest"
+  },
+  "author": "Xyfir, LLC <contact@xyfir.com> (https://www.xyfir.com)",
+  "license": "MIT",
+  "prettier": {
+    "singleQuote": true
+  },
+  "dependencies": {
+    "app-module-path": "^2.2.0",
+    "axios": "^0.18.0",
+    "body-parser": "^1.18.3",
+    "cookie-parser": "^1.4.3",
+    "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0"
+  },
+  "devDependencies": {
+    "@types/cookie-parser": "^1.4.1",
+    "@types/jest": "^23.3.14",
+    "@types/jsonwebtoken": "^8.3.0",
+    "jest": "^24.1.0",
+    "jest-extended": "^0.11.1",
+    "typescript": "^3.3.3"
+  }
+}

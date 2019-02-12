@@ -23,7 +23,7 @@ module.exports = {
   mode: config.ENVIRONMENT,
 
   entry: {
-    Pay: './web/components/Pay.jsx'
+    Pay: './components/Pay.jsx'
   },
 
   output: {
@@ -32,7 +32,7 @@ module.exports = {
   },
 
   resolve: {
-    modules: [path.resolve(__dirname, 'web'), 'node_modules'],
+    modules: [__dirname, 'node_modules'],
     alias: {
       server: __dirname
     },
@@ -44,7 +44,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         loader: 'babel-loader',
-        include: [path.resolve(__dirname, 'web')],
+        include: [__dirname],
         exclude: /node_modules/,
         options: {
           presets: ['env', 'react']
