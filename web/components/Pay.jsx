@@ -1,5 +1,3 @@
-import 'babel-polyfill';
-
 import { SelectField } from 'react-md';
 import QueryString from 'query-string';
 import { render } from 'react-dom';
@@ -7,14 +5,10 @@ import request from 'superagent';
 import React from 'react';
 
 // Components
-import PayWithInAppPurchase from 'components/pay/IAP';
-import PayWithCoinPayments from 'components/pay/CoinPayments';
-import PayWithSwiftDemand from 'components/pay/SwiftDemand';
 import PayWithCoinbase from 'components/pay/Coinbase';
 import PayWithSquare from 'components/pay/Square';
 
 class Pay extends React.Component {
-
   constructor(props) {
     super(props);
 
@@ -44,7 +38,8 @@ class Pay extends React.Component {
 
     request.get(`/api/payments/${q.payment_id}`).end(async (err, res) => {
       if (err) return history.back();
-      if (res.body.paid !== null) return location.replace(res.body.redirect_url);
+      if (res.body.paid !== null)
+        return location.replace(res.body.redirect_url);
 
       res.body.methods = res.body.methods.map(m => {
         switch (m) {
@@ -54,29 +49,10 @@ class Pay extends React.Component {
           case 'crypto':
           case 'coinbase':
             return { label: 'Cryptocurrency', value: 'coinbase' };
-          case 'coinpayments':
-            return { label: 'Cryptocurrency', value: 'coinpayments' };
-          case 'swiftdemand':
-            return { label: 'SwiftDemand', value: 'swiftdemand' };
-          case 'iap':
-            return { label: 'In-App Purchase', value: 'iap' };
           default:
             return null;
         }
       });
-
-      // Wait for Cordova API to be available if they're needed
-      // Seller should not have supplied IAP as a method if not available
-      if (res.body.methods.findIndex(m => m.value == 'iap') > -1) {
-        await new Promise(resolve => {
-          const interval = setInterval(() => {
-            if (window.cordova) {
-              clearInterval(interval);
-              resolve();
-            }
-          }, 150);
-        });
-      }
 
       this.setState({
         q,
@@ -97,45 +73,48 @@ class Pay extends React.Component {
   }
 
   render() {
-    const {payment, method, errors} = this.state;
+    const { payment, method, errors } = this.state;
 
     if (!payment) return null;
 
     const form = (() => {
       switch (method) {
-        case 'coinpayments': return <PayWithCoinPayments Pay={this} />
-        case 'swiftdemand': return <PayWithSwiftDemand Pay={this} />
-        case 'coinbase': return <PayWithCoinbase Pay={this} />
-        case 'square': return <PayWithSquare Pay={this} />
-        case 'iap': return <PayWithInAppPurchase Pay={this} />
-        default: return null
+        case 'coinbase':
+          return <PayWithCoinbase Pay={this} />;
+        case 'square':
+          return <PayWithSquare Pay={this} />;
+        default:
+          return null;
       }
     })();
 
     return (
-      <div className='pay-entry'>
+      <div className="pay-entry">
         {payment.methods.length > 1 ? (
-          <header className='method-selector'>
+          <header className="method-selector">
             <label>Payment Method</label>
             <SelectField
-              id='payment-method'
+              id="payment-method"
               value={method}
               onChange={v => this.setState({ method: v })}
               menuItems={payment.methods}
-              className='md-cell'
+              className="md-cell"
             />
           </header>
         ) : null}
 
-        {errors.length ? (<ul className='errors'>{
-          errors.map((e, i) => <li key={i}>{e}</li>)
-        }</ul>) : null}
+        {errors.length ? (
+          <ul className="errors">
+            {errors.map((e, i) => (
+              <li key={i}>{e}</li>
+            ))}
+          </ul>
+        ) : null}
 
         {form}
       </div>
-    )
+    );
   }
-
 }
 
 render(<Pay />, document.getElementById('content'));
