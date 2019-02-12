@@ -1,4 +1,4 @@
-import AdminPanel from 'admyn/client';
+import AdminPanel from 'admyn/web';
 import { render } from 'react-dom';
 import React from 'react';
 

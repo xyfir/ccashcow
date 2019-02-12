@@ -24,8 +24,8 @@ module.exports = {
   mode: config.ENVIRONMENT,
 
   entry: {
-    Admin: './client/components/Admin.jsx',
-    Pay: './client/components/Pay.jsx'
+    Admin: './web/components/Admin.jsx',
+    Pay: './web/components/Pay.jsx'
   },
 
   output: {
@@ -35,7 +35,7 @@ module.exports = {
 
   resolve: {
     modules: [
-      path.resolve(__dirname, 'client'),
+      path.resolve(__dirname, 'web'),
       'node_modules'
     ],
     alias: {
@@ -49,7 +49,7 @@ module.exports = {
       test: /\.jsx?$/,
       loader: 'babel-loader',
       include: [
-        path.resolve(__dirname, 'client')
+        path.resolve(__dirname, 'web')
       ],
       exclude: /node_modules/,
       options: {

@@ -7,8 +7,8 @@
     "build": "npm run build:css & npm run build:js",
     "build:js": "webpack-cli",
     "build:css": "npm run build:admin-css & npm run build:pay-css",
-    "build:admin-css": "node-sass --output-style compressed client/styles/admin.scss server/static/css/admin.css",
-    "build:pay-css": "node-sass --output-style compressed client/styles/pay.scss server/static/css/pay.css"
+    "build:admin-css": "node-sass --output-style compressed web/styles/admin.scss server/static/css/admin.css",
+    "build:pay-css": "node-sass --output-style compressed web/styles/pay.scss server/static/css/pay.css"
   },
   "author": "Xyfir, LLC <contact@xyfir.com> (https://xyfir.com/)",
   "license": "",
