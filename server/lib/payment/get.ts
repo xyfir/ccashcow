@@ -1,18 +1,13 @@
 import { JWT_KEY, STORAGE } from 'constants/config';
-import { verify, sign } from 'jsonwebtoken';
+import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
+import { signJWT } from 'lib/jwt/sign';
 
 export async function getPayment(
   jwt: string
 ): Promise<RichCow.GetPaymentResponse> {
-  // Verify JWT
-  const provided: RichCow.Payment = await new Promise((resolve, reject) =>
-    verify(jwt, JWT_KEY, {}, (err, token) =>
-      err ? reject(err) : resolve(token as RichCow.Payment)
-    )
-  );
-
+  const provided = await verifyJWT(jwt, JWT_KEY);
   await storage.init(STORAGE);
   let saved: RichCow.Payment = await storage.getItem(`payment-${provided.id}`);
 
@@ -23,10 +18,6 @@ export async function getPayment(
   }
 
   // Generate new JWT
-  const newJWT: string = await new Promise((resolve, reject) =>
-    sign(saved, JWT_KEY, { expiresIn: '10m' }, (err, token) =>
-      err ? reject(err) : resolve(token)
-    )
-  );
+  const newJWT = await signJWT(saved, JWT_KEY);
   return { payment: saved, jwt: newJWT };
 }
