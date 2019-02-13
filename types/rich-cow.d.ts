@@ -38,12 +38,8 @@ export namespace RichCow {
     coinbaseCommerceChargeCode?: string;
   }
 
-  export interface RetrievedPayment {
+  export interface GetPaymentResponse {
     payment: Payment;
-    /**
-     * Provided if the payment is complete and the user should be redirected
-     *  back to the main application.
-     */
-    jwt?: string;
+    jwt: string;
   }
 }

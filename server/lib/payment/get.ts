@@ -5,7 +5,7 @@ import { RichCow } from 'types/rich-cow';
 
 export async function getPayment(
   jwt: string
-): Promise<RichCow.RetrievedPayment> {
+): Promise<RichCow.GetPaymentResponse> {
   // Verify JWT
   const provided: RichCow.Payment = await new Promise((resolve, reject) =>
     verify(jwt, JWT_KEY, {}, (err, token) =>
@@ -14,23 +14,19 @@ export async function getPayment(
   );
 
   await storage.init(STORAGE);
-  const saved: RichCow.Payment = await storage.getItem(
-    `payment-${provided.id}`
-  );
+  let saved: RichCow.Payment = await storage.getItem(`payment-${provided.id}`);
 
-  // Payment is complete
-  // Return saved payment and generate a JWT from it
-  if (saved && saved.paid) {
-    const newJWT: string = await new Promise((resolve, reject) =>
-      sign(saved, JWT_KEY, { expiresIn: '10m' }, (err, token) =>
-        err ? reject(err) : resolve(token)
-      )
-    );
-    return { payment: saved, jwt: newJWT };
+  // Save payment
+  if (saved === undefined) {
+    await storage.setItem(`payment-${provided.id}`, provided);
+    saved = provided;
   }
-  // User has not paid yet
-  // Return payment object parsed from provided JWT
-  else {
-    return { payment: provided };
-  }
+
+  // Generate new JWT
+  const newJWT: string = await new Promise((resolve, reject) =>
+    sign(saved, JWT_KEY, { expiresIn: '10m' }, (err, token) =>
+      err ? reject(err) : resolve(token)
+    )
+  );
+  return { payment: saved, jwt: newJWT };
 }
