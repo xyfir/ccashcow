@@ -7,6 +7,10 @@ export namespace RichCow {
      */
     id: number;
     /**
+     * The user's account's primary email address.
+     */
+    email?: string;
+    /**
      * Amount in USD cents.
      */
     amount: number;
@@ -22,6 +26,16 @@ export namespace RichCow {
      * The payment method the user fulfilled the payment with.
      */
     method?: PaymentMethod;
+    /**
+     * ID of the Square transaction.
+     * https://docs.connect.squareup.com/api/connect/v2#type-transaction
+     */
+    squareTransactionId?: string;
+    /**
+     * The code for the Coinbase Commerce charge.
+     * https://commerce.coinbase.com/docs/api/#charges
+     */
+    coinbaseCommerceChargeCode?: string;
   }
 
   export interface RetrievedPayment {
