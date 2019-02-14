@@ -13,6 +13,8 @@ export async function getPayment(
 
   // Save payment
   if (saved === undefined) {
+    delete provided.iat;
+    delete provided.exp;
     await storage.setItem(`payment-${provided.id}`, provided);
     saved = provided;
   }
