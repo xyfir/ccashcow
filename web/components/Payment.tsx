@@ -11,8 +11,8 @@ import {
   Button
 } from '@material-ui/core';
 
-declare class SqPaymentForm {
-  constructor(options: any);
+interface SqPaymentForm {
+  constructor(options: any): SqPaymentForm;
   requestCardNonce(): void;
   build(): void;
 }
@@ -24,10 +24,32 @@ const styles = createStyles({
     display: 'flex',
     height: '100vh'
   },
+  form: {
+    maxWidth: '21em',
+    padding: '1em',
+    margin: '0.5em auto'
+  },
+  title: {
+    fontSize: '300%'
+  },
+  input: {
+    color: '#222',
+    fontFamily: 'monospace',
+    fontSize: '2em'
+  },
   footer: {
     maxWidth: '20em',
     padding: '1em',
     margin: '0 auto'
+  },
+  buttons: {
+    marginTop: '2em'
+  },
+  ccButton: {
+    marginRight: '0.5em'
+  },
+  payButton: {
+    marginTop: '1em'
   }
 });
 
@@ -53,19 +75,21 @@ class _Payment extends React.Component<
 
   componentDidUpdate(prevProps, prevState: PaymentState) {
     if (!prevState.square && this.state.square) {
-      this.form = new SqPaymentForm({
+      this.form = new window['SqPaymentForm']({
         cvv: {
           elementId: 'sq-cvv',
           placeholder: 'CVV'
         },
         callbacks: {
           cardNonceResponseReceived: (
-            errors: undefined | string[],
+            errors: undefined | { message: string }[],
             nonce: string,
             cardData: any
           ) => {
+            console.log(arguments);
             if (errors && errors.length) {
-              for (let error of errors) this.props.enqueueSnackbar(error);
+              for (let error of errors)
+                this.props.enqueueSnackbar(error.message);
             } else {
               api.post('/payment/square', { nonce, ...cardData });
             }
@@ -80,19 +104,14 @@ class _Payment extends React.Component<
           placeholder: 'Postal Code'
         },
         inputClass: 'sq-input',
-        inputStyles: [
-          {
-            color: '#222',
-            fontFamily: 'monospace',
-            fontSize: '2em'
-          }
-        ],
+        inputStyles: [styles.input],
         applicationId: SQUARE_APPLICATION_ID,
         expirationDate: {
-          elementId: 'sq-expiration-date',
-          placeholder: 'Expiration (MM/YY)'
+          elementId: 'sq-expires',
+          placeholder: 'Expires'
         }
       });
+      this.form.build();
     }
   }
 
@@ -114,42 +133,47 @@ class _Payment extends React.Component<
     return (
       <main className={classes.main}>
         {square ? (
-          <div>
-            <input type="text" placeholder="Country (US/UK/CA/etc)" />
-            <input type="text" placeholder="Address" />
-            <div id="sq-postal-code" />
+          <div className={classes.form}>
             <div id="sq-card-number" />
             <div id="sq-cvv" />
-            <div id="sq-expiration-date" />
+            <div id="sq-expires" />
+            <div id="sq-postal-code" />
             <Button
+              className={classes.payButton}
               onClick={() => this.onPayWithSquare()}
               variant="contained"
               color="primary"
             >
-              Pay
+              Pay ${payment.amount / 100} USD
             </Button>
           </div>
         ) : (
-          <div>
-            <Typography variant="h1">Pay With...</Typography>
-            {payment.methods.indexOf('square') > -1 ? (
-              <Button
-                onClick={() => this.onPayWithSquare()}
-                variant="contained"
-                color="primary"
-              >
-                Credit Card
-              </Button>
-            ) : null}
-            {payment.methods.indexOf('coinbase-commerce') > -1 ? (
-              <Button
-                onClick={() => this.onPayWithCoinbaseCommerce()}
-                variant="contained"
-                color="secondary"
-              >
-                Cryptocurrency
-              </Button>
-            ) : null}
+          <div className={classes.form}>
+            <Typography variant="h1" className={classes.title}>
+              ${payment.amount / 100} USD
+            </Typography>
+
+            <div className={classes.buttons}>
+              {payment.methods.indexOf('square') > -1 ? (
+                <Button
+                  className={classes.ccButton}
+                  onClick={() => this.onPayWithSquare()}
+                  variant="contained"
+                  color="primary"
+                >
+                  Credit Card
+                </Button>
+              ) : null}
+              {payment.methods.indexOf('coinbase-commerce') > -1 ? (
+                <Button
+                  onClick={() => this.onPayWithCoinbaseCommerce()}
+                  variant="contained"
+                  color="secondary"
+                >
+                  BTC / Other
+                </Button>
+              ) : null}
+            </div>
           </div>
         )}
         <footer className={classes.footer}>
