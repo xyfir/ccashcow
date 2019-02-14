@@ -5,7 +5,7 @@ import * as React from 'react';
 import { theme } from 'constants/theme';
 import { hot } from 'react-hot-loader';
 
-const _App = (
+const _App = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
     <SnackbarProvider
