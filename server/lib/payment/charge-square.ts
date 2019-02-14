@@ -32,9 +32,12 @@ export async function chargeSquare(data: {
         amount: payment.amount,
         currency: 'USD'
       },
-      reference_id: payment.id,
+      reference_id: payment.id.toString(),
       delay_capture: false,
-      idempotency_key: payment.id,
+      idempotency_key:
+        typeof test == 'undefined'
+          ? payment.id.toString()
+          : Date.now().toString(),
       billing_address: {
         address_line_1: data.address,
         postal_code: data.postal,
