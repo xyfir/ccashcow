@@ -6,7 +6,7 @@ export function api_startSquarePayment(
   res: Response,
   next: NextFunction
 ): void {
-  startSquarePayment(req.body)
-    .then(() => res.status(200).json({}))
+  startSquarePayment(req.body.paymentId)
+    .then(info => res.status(200).json(info))
     .catch(next);
 }
