@@ -1,14 +1,13 @@
 import { SelectField } from 'react-md';
 import QueryString from 'query-string';
-import { render } from 'react-dom';
+import * as React from 'react';
 import request from 'superagent';
-import React from 'react';
 
 // Components
 import PayWithCoinbase from 'components/pay/Coinbase';
 import PayWithSquare from 'components/pay/Square';
 
-class Pay extends React.Component {
+export class App extends React.Component {
   constructor(props) {
     super(props);
 
@@ -116,5 +115,3 @@ class Pay extends React.Component {
     );
   }
 }
-
-render(<Pay />, document.getElementById('content'));
