@@ -1,3 +1,4 @@
+import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
 import { signJWT } from 'lib/jwt/sign';
@@ -10,9 +11,11 @@ import {
 } from 'constants/config';
 
 export async function finishSquarePayment(
-  paymentId: RichCow.Payment['id'],
+  jwt: string,
   squareTransactionId: string
 ): Promise<{ jwt: string }> {
+  const { id: paymentId } = await verifyJWT(jwt, JWT_KEY);
+
   await storage.init(STORAGE);
   const payment: RichCow.Payment = await storage.getItem(
     `payment-${paymentId}`
