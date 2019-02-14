@@ -1,4 +1,5 @@
 module.exports = {
-  modulePaths: ["<rootDir>/dist"],
-  testMatch: ["**/dist/tests.js"]
+  testEnvironment: 'node',
+  modulePaths: ['<rootDir>/dist'],
+  testMatch: ['**/dist/tests.js']
 };
