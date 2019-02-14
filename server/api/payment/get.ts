@@ -7,6 +7,6 @@ export function api_getPayment(
   next: NextFunction
 ): void {
   getPayment(req.query.jwt)
-    .then(info => res.status(200).json(info))
+    .then(payment => res.status(200).json(payment))
     .catch(next);
 }

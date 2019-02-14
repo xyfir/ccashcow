@@ -44,9 +44,4 @@ export namespace RichCow {
     iat?: number;
     exp?: number;
   }
-
-  export interface GetPaymentResponse {
-    payment: Payment;
-    jwt: string;
-  }
 }
