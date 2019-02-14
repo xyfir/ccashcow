@@ -2,6 +2,7 @@ export namespace RichCow {
   export type PaymentMethod = "square" | "coinbase-commerce";
 
   export interface Payment {
+    // Provided by application
     /**
      * A unique identifier for the payment as created by the application.
      */
@@ -18,6 +19,8 @@ export namespace RichCow {
      * Allowed methods for the user to choose from for the payment.
      */
     methods: PaymentMethod[];
+
+    // For completed payments
     /**
      * Unix timestamp in milliseconds of when the payment was paid.
      */
@@ -36,6 +39,10 @@ export namespace RichCow {
      * https://commerce.coinbase.com/docs/api/#charges
      */
     coinbaseCommerceChargeCode?: string;
+
+    // JWT properties
+    iat?: number;
+    exp?: number;
   }
 
   export interface GetPaymentResponse {
