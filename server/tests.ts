@@ -32,17 +32,20 @@ test('sign and verify jwt', async () => {
 });
 
 test('get payment', async () => {
-  let data = await getPayment(
-    await signJWT({ id: 1, amount: 999, methods: ['square'] }, JWT_KEY)
+  const jwt = await signJWT(
+    { id: 1, amount: 999, methods: ['square'] },
+    JWT_KEY
   );
-  expect(data.payment.id).toBe(1);
 
-  const payment: RichCow.Payment = await storage.getItem('payment-1');
-  expect(payment).not.toBeUndefined();
+  let payment = await getPayment(jwt);
   expect(payment.id).toBe(1);
 
-  data = await getPayment(data.jwt);
-  expect(data.payment.id).toBe(1);
+  const _payment: RichCow.Payment = await storage.getItem('payment-1');
+  expect(_payment).not.toBeUndefined();
+  expect(_payment.id).toBe(1);
+
+  payment = await getPayment(jwt);
+  expect(payment.id).toBe(1);
 });
 
 test.only('square payment', async () => {
@@ -75,7 +78,10 @@ test.only('square payment', async () => {
   );
 
   const squareTransactionId: string = res.data.transaction.id;
-  const { jwt } = await finishSquarePayment(2, squareTransactionId);
+  const { jwt } = await finishSquarePayment(
+    await signJWT({ id: 2, amount: 1, methods: ['square'] }, JWT_KEY),
+    squareTransactionId
+  );
   await expect(verifyJWT(jwt, JWT_KEY)).not.toReject();
   payment = await storage.getItem('payment-2');
   expect(payment.paid).toBeNumber();
