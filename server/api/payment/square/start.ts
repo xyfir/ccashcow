@@ -1,12 +1,12 @@
 import { NextFunction, Response, Request } from 'express';
-import { chargeSquare } from 'lib/payment/charge-square';
+import { startSquarePayment } from 'lib/payment/square/start';
 
-export function api_chargeSquare(
+export function api_startSquarePayment(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  chargeSquare(req.body)
+  startSquarePayment(req.body)
     .then(() => res.status(200).json({}))
     .catch(next);
 }
