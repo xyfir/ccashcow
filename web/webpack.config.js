@@ -1,57 +1,100 @@
 const CompressionPlugin = require('compression-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
-const config = require('./server/constants/config');
+const CONFIG = require('./constants/config');
 const path = require('path');
 
-const plugins = [];
-const isProd = config.ENVIRONMENT == 'production';
-
-if (isProd) {
-  plugins.push(
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: JSON.stringify('production')
-      }
-    }),
-    new CompressionPlugin({
-      asset: '[path].gz'
-    })
-  );
-}
-
 module.exports = {
-  mode: config.ENVIRONMENT,
+  mode: CONFIG.PROD ? 'production' : 'development',
 
-  entry: {
-    Pay: './components/Pay.jsx'
-  },
+  entry: './lib/index.ts',
 
   output: {
-    filename: '[name].js',
-    path: path.resolve(__dirname, 'server/static/js')
+    publicPath: '/static/',
+    filename: CONFIG.PROD ? '[name].[hash].js' : '[name].js',
+    pathinfo: false,
+    path: path.resolve(__dirname, 'dist')
   },
 
   resolve: {
     modules: [__dirname, 'node_modules'],
-    alias: {
-      server: __dirname
-    },
-    extensions: ['.js', '.jsx']
+    extensions: ['.ts', '.tsx', '.js', '.jsx']
   },
 
   module: {
     rules: [
       {
-        test: /\.jsx?$/,
+        test: /\.(js|jsx|ts|tsx)$/,
         loader: 'babel-loader',
-        include: [__dirname],
+        include: [
+          path.resolve(__dirname, 'components'),
+          path.resolve(__dirname, 'constants'),
+          path.resolve(__dirname, 'lib')
+        ],
         exclude: /node_modules/,
         options: {
-          presets: ['env', 'react']
+          presets: [
+            ['@babel/preset-typescript', { isTSX: true, allExtensions: true }],
+            [
+              '@babel/preset-env',
+              {
+                targets: {
+                  browsers: ['last 2 Chrome versions']
+                }
+              }
+            ],
+            '@babel/preset-react'
+          ],
+          plugins: [
+            '@babel/plugin-proposal-class-properties',
+            'react-hot-loader/babel'
+          ]
         }
+      },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.(png|woff|woff2|eot|ttf|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: { publicPath: '/static' }
+          }
+        ]
       }
     ]
   },
 
-  plugins
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: JSON.stringify(CONFIG.PROD ? 'production' : 'development')
+      }
+    }),
+    new HtmlWebpackPlugin({
+      templateParameters: CONFIG,
+      minify: CONFIG.PROD,
+      template: 'template.html'
+    }),
+    CONFIG.PROD ? new CompressionPlugin({ filename: '[path].gz' }) : null,
+    CONFIG.PROD ? null : new webpack.HotModuleReplacementPlugin()
+  ].filter(p => p !== null),
+
+  devtool: 'inline-source-map',
+
+  watchOptions: {
+    aggregateTimeout: 500,
+    ignored: ['node_modules', 'dist']
+  },
+
+  devServer: {
+    historyApiFallback: true,
+    /** @todo remove this eventually */
+    disableHostCheck: true,
+    contentBase: path.join(__dirname, 'dist'),
+    port: CONFIG.PORT,
+    hot: true
+  }
 };
