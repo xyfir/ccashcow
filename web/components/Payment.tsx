@@ -1,7 +1,8 @@
-import { NAME, APP_PAYMENT_URL, SQUARE_APPLICATION_ID } from 'constants/config';
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
+import { NAME, APP_PAYMENT_URL } from 'constants/config';
 import { RichCow } from 'types/rich-cow';
 import * as React from 'react';
+import { parse } from 'qs';
 import { api } from 'lib/api';
 import {
   createStyles,
@@ -10,12 +11,6 @@ import {
   WithStyles,
   Button
 } from '@material-ui/core';
-
-interface SqPaymentForm {
-  constructor(options: any): SqPaymentForm;
-  requestCardNonce(): void;
-  build(): void;
-}
 
 const styles = createStyles({
   main: {
@@ -32,11 +27,6 @@ const styles = createStyles({
   title: {
     fontSize: '300%'
   },
-  input: {
-    color: '#222',
-    fontFamily: 'monospace',
-    fontSize: '2em'
-  },
   footer: {
     maxWidth: '20em',
     padding: '1em',
@@ -47,107 +37,63 @@ const styles = createStyles({
   },
   ccButton: {
     marginRight: '0.5em'
-  },
-  payButton: {
-    marginTop: '1em'
   }
 });
 
-interface PaymentState extends Partial<RichCow.GetPaymentResponse> {
+interface PaymentState {
+  payment?: RichCow.Payment;
   loading: boolean;
-  square: boolean;
+  jwt?: string;
 }
 
 class _Payment extends React.Component<
   WithStyles<typeof styles> & InjectedNotistackProps,
   PaymentState
 > {
-  state: PaymentState = { loading: true, square: false };
-  form: SqPaymentForm;
+  interval?: NodeJS.Timer;
+  state: PaymentState = { loading: true };
 
   componentDidMount() {
-    const jwt = location.search.split('?jwt=')[1];
+    const { jwt }: { jwt?: string } = parse(location.search.substr(1));
     api
       .get('/payment', { params: { jwt } })
-      .then(res => this.setState({ ...res.data, loading: false }))
+      .then(res => {
+        const payment: RichCow.Payment = res.data;
+        this.setState({ payment, loading: false, jwt });
+        if (payment.paid) throw 'Payment already paid';
+        if (payment.method) this.waitForPayment();
+      })
       .catch(() => location.replace(APP_PAYMENT_URL.replace('{{JWT}}', jwt)));
   }
 
-  componentDidUpdate(prevProps, prevState: PaymentState) {
-    if (!prevState.square && this.state.square) {
-      this.form = new window['SqPaymentForm']({
-        cvv: {
-          elementId: 'sq-cvv',
-          placeholder: 'CVV'
-        },
-        callbacks: {
-          cardNonceResponseReceived: (
-            errors: undefined | { message: string }[],
-            nonce: string,
-            cardData: any
-          ) => {
-            console.log(arguments);
-            if (errors && errors.length) {
-              for (let error of errors)
-                this.props.enqueueSnackbar(error.message);
-            } else {
-              api.post('/payment/square', { nonce, ...cardData });
-            }
-          }
-        },
-        cardNumber: {
-          elementId: 'sq-card-number',
-          placeholder: 'Card Number'
-        },
-        postalCode: {
-          elementId: 'sq-postal-code',
-          placeholder: 'Postal Code'
-        },
-        inputClass: 'sq-input',
-        inputStyles: [styles.input],
-        applicationId: SQUARE_APPLICATION_ID,
-        expirationDate: {
-          elementId: 'sq-expires',
-          placeholder: 'Expires'
-        }
-      });
-      this.form.build();
-    }
+  onPay(method: RichCow.PaymentMethod) {
+    api
+      .post(`/payment/${method}/start`, { paymentId: this.state.payment.id })
+      .then(res => location.replace(res.data.url))
+      .catch(err => this.props.enqueueSnackbar(err.response.data.error));
   }
 
-  onPayWithCoinbaseCommerce() {}
-
-  onPayWithSquare() {
-    if (this.state.square) return this.form.requestCardNonce();
-
-    const script = document.createElement('script');
-    script.onload = () => this.setState({ square: true });
-    script.src = 'https://js.squareup.com/v2/paymentform';
-    document.head.appendChild(script);
+  waitForPayment() {
+    const { method } = this.state.payment;
+    this.interval = setInterval(
+      () =>
+        api
+          .post(`/payment/${method}/finish`, parse(location.search.substr(1)))
+          .then(res =>
+            location.replace(APP_PAYMENT_URL.replace('{{JWT}}', res.data.jwt))
+          )
+          .catch(err => console.warn('waitForPayment()', err)),
+      5000
+    );
   }
 
   render() {
-    const { payment, loading, square, jwt } = this.state;
+    const { payment, loading, jwt } = this.state;
     const { classes } = this.props;
     if (loading) return null;
     return (
       <main className={classes.main}>
-        {square ? (
-          <div className={classes.form}>
-            <div id="sq-card-number" />
-            <div id="sq-cvv" />
-            <div id="sq-expires" />
-            <div id="sq-postal-code" />
-            <Button
-              className={classes.payButton}
-              onClick={() => this.onPayWithSquare()}
-              variant="contained"
-              color="primary"
-            >
-              Pay ${payment.amount / 100} USD
-            </Button>
-          </div>
-        ) : (
+        {payment.method === undefined ? (
           <div className={classes.form}>
             <Typography variant="h1" className={classes.title}>
               ${payment.amount / 100} USD
@@ -157,7 +103,7 @@ class _Payment extends React.Component<
               {payment.methods.indexOf('square') > -1 ? (
                 <Button
                   className={classes.ccButton}
-                  onClick={() => this.onPayWithSquare()}
+                  onClick={() => this.onPay('square')}
                   variant="contained"
                   color="primary"
                 >
@@ -166,7 +112,7 @@ class _Payment extends React.Component<
               ) : null}
               {payment.methods.indexOf('coinbase-commerce') > -1 ? (
                 <Button
-                  onClick={() => this.onPayWithCoinbaseCommerce()}
+                  onClick={() => this.onPay('coinbase-commerce')}
                   variant="contained"
                   color="secondary"
                 >
@@ -174,6 +120,13 @@ class _Payment extends React.Component<
                 </Button>
               ) : null}
             </div>
+          </div>
+        ) : (
+          <div className={classes.form}>
+            <Typography>
+              Please wait while your payment is confirmed. Do not navigate away
+              from this page unless your payment failed or cancelled.
+            </Typography>
           </div>
         )}
         <footer className={classes.footer}>
