@@ -6,7 +6,7 @@ export function api_finishSquarePayment(
   res: Response,
   next: NextFunction
 ): void {
-  finishSquarePayment(req.body.jwt, req.body.squareTransactionId)
+  finishSquarePayment(req.body.jwt, req.body.transactionId)
     .then(info => res.status(200).json(info))
     .catch(next);
 }
