@@ -32,7 +32,7 @@ export async function startCoinbaseCommercePayment(
     'https://api.commerce.coinbase.com/charges',
     {
       name: NAME,
-      local_price: { amount: payment.amount, currency: 'USD' },
+      local_price: { amount: payment.amount / 100, currency: 'USD' },
       redirect_url: `${RICH_COW_WEB_URL}?jwt=${jwt}`,
       pricing_type: 'fixed_price'
     },
