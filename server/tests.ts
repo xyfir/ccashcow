@@ -8,7 +8,6 @@ import { RichCow } from 'types/rich-cow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 import {
-  COINBASE_WEBHOOK_SECRET,
   SQUARE_LOCATION_KEY,
   SQUARE_ACCESS_TOKEN,
   JWT_KEY,
@@ -49,9 +48,11 @@ test('get payment', async () => {
 });
 
 test('square payment', async () => {
-  await getPayment(
-    await signJWT({ id: 2, amount: 999, methods: ['square'] }, JWT_KEY)
+  const _jwt = await signJWT(
+    { id: 2, amount: 999, methods: ['square'] },
+    JWT_KEY
   );
+  await getPayment(_jwt);
   const { url } = await startSquarePayment(2);
   expect(url).toStartWith('https://connect.squareup.com/v2/checkout?c=');
   let payment: RichCow.Payment = await storage.getItem('payment-2');
@@ -78,10 +79,7 @@ test('square payment', async () => {
   );
 
   const squareTransactionId: string = res.data.transaction.id;
-  const { jwt } = await finishSquarePayment(
-    await signJWT({ id: 2, amount: 1, methods: ['square'] }, JWT_KEY),
-    squareTransactionId
-  );
+  const { jwt } = await finishSquarePayment(_jwt, squareTransactionId);
   await expect(verifyJWT(jwt, JWT_KEY)).not.toReject();
   payment = await storage.getItem('payment-2');
   expect(payment.paid).toBeNumber();
@@ -89,23 +87,19 @@ test('square payment', async () => {
 });
 
 test('coinbase commerce payment', async () => {
-  await getPayment(
-    await signJWT({ id: 3, amount: 1, methods: ['coinbase-commerce'] }, JWT_KEY)
+  const _jwt = await signJWT(
+    { id: 3, amount: 1, methods: ['coinbase-commerce'] },
+    JWT_KEY
   );
+  await getPayment(_jwt);
   const { url } = await startCoinbaseCommercePayment(3);
   expect(url).toStartWith('https://commerce.coinbase.com/charges/');
-
-  await expect(
-    finishCoinbaseCommercePayment(
-      await signJWT(
-        { id: 3, amount: 1, methods: ['coinbase-commerce'] },
-        COINBASE_WEBHOOK_SECRET
-      ),
-      'T3ST'
-    )
-  ).not.toReject();
-  const payment: RichCow.Payment = await storage.getItem('payment-3');
-  expect(payment.paid).toBeNumber();
+  let payment: RichCow.Payment = await storage.getItem('payment-3');
   expect(payment.method).toBe('coinbase-commerce');
-  expect(payment.coinbaseCommerceChargeCode).toBe('T3ST');
+  expect(payment.coinbaseCommerceChargeCode).toBeString();
+
+  const { jwt } = await finishCoinbaseCommercePayment(_jwt);
+  await expect(verifyJWT(jwt, JWT_KEY)).not.toReject();
+  payment = await storage.getItem('payment-3');
+  expect(payment.paid).toBeNumber();
 });
