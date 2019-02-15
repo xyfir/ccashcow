@@ -8,10 +8,6 @@ export namespace RichCow {
      */
     id: number;
     /**
-     * The user's account's primary email address.
-     */
-    email?: string;
-    /**
      * Amount in USD cents.
      */
     amount: number;
