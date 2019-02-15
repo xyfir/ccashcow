@@ -1,5 +1,6 @@
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
 import { NAME, APP_PAYMENT_URL } from 'constants/config';
+import { formatAmount } from 'lib/format-amount';
 import { RichCow } from 'types/rich-cow';
 import * as React from 'react';
 import { parse } from 'qs';
@@ -9,18 +10,21 @@ import {
   withStyles,
   Typography,
   WithStyles,
-  Button
+  Button,
+  Paper
 } from '@material-ui/core';
 
 const styles = createStyles({
   main: {
+    justifyContent: 'center',
     flexDirection: 'column',
     fontFamily: 'Roboto',
     display: 'flex',
     height: '100vh'
   },
-  form: {
-    maxWidth: '21em',
+  paper: {
+    textAlign: 'center',
+    minWidth: '21em',
     padding: '1em',
     margin: '0.5em auto'
   },
@@ -94,10 +98,11 @@ class _Payment extends React.Component<
     return (
       <main className={classes.main}>
         {payment.method === undefined ? (
-          <div className={classes.form}>
+          <Paper className={classes.paper} elevation={1}>
             <Typography variant="h1" className={classes.title}>
-              ${payment.amount / 100} USD
+              {formatAmount(payment.amount / 100)} USD
             </Typography>
+            <Typography>Select your payment method:</Typography>
 
             <div className={classes.buttons}>
               {payment.methods.indexOf('square') > -1 ? (
@@ -120,14 +125,14 @@ class _Payment extends React.Component<
                 </Button>
               ) : null}
             </div>
-          </div>
+          </Paper>
         ) : (
-          <div className={classes.form}>
+          <Paper className={classes.paper} elevation={1}>
             <Typography>
               Please wait while your payment is confirmed. Do not navigate away
               from this page unless your payment failed or cancelled.
             </Typography>
-          </div>
+          </Paper>
         )}
         <footer className={classes.footer}>
           <Button
