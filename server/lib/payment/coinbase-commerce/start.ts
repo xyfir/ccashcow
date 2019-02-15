@@ -3,7 +3,7 @@ import { RichCow } from 'types/rich-cow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 import {
-  COINBASE_API_KEY,
+  COINBASE_COMMERCE_API_KEY,
   RICH_COW_WEB_URL,
   JWT_KEY,
   STORAGE,
@@ -39,7 +39,7 @@ export async function startCoinbaseCommercePayment(
     {
       headers: {
         'X-CC-Version': '2018-03-22',
-        'X-CC-Api-Key': COINBASE_API_KEY
+        'X-CC-Api-Key': COINBASE_COMMERCE_API_KEY
       }
     }
   );
