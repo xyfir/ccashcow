@@ -6,7 +6,7 @@ export function api_finishCoinbaseCommercePayment(
   res: Response,
   next: NextFunction
 ): void {
-  finishCoinbaseCommercePayment(req.body.data.metadata.jwt, req.body.data.code)
-    .then(() => res.status(200).json({}))
+  finishCoinbaseCommercePayment(req.body.jwt)
+    .then(info => res.status(200).json(info))
     .catch(next);
 }
