@@ -1,5 +1,5 @@
-import { finishCoinbasePayment } from 'lib/payment/coinbase/finish';
-import { startCoinbasePayment } from 'lib/payment/coinbase/start';
+import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/finish';
+import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
 import { startSquarePayment } from 'lib/payment/square/start';
 import { getPayment } from 'lib/payment/get';
 import { verifyJWT } from 'lib/jwt/verify';
@@ -48,7 +48,7 @@ test('get payment', async () => {
   expect(payment.id).toBe(1);
 });
 
-test.only('square payment', async () => {
+test('square payment', async () => {
   await getPayment(
     await signJWT({ id: 2, amount: 999, methods: ['square'] }, JWT_KEY)
   );
@@ -92,11 +92,11 @@ test('coinbase commerce payment', async () => {
   await getPayment(
     await signJWT({ id: 3, amount: 1, methods: ['coinbase-commerce'] }, JWT_KEY)
   );
-  const { url } = await startCoinbasePayment(3);
+  const { url } = await startCoinbaseCommercePayment(3);
   expect(url).toStartWith('https://commerce.coinbase.com/charges/');
 
   await expect(
-    finishCoinbasePayment(
+    finishCoinbaseCommercePayment(
       await signJWT(
         { id: 3, amount: 1, methods: ['coinbase-commerce'] },
         COINBASE_WEBHOOK_SECRET

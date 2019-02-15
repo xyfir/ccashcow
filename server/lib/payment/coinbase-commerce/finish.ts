@@ -3,7 +3,7 @@ import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
 
-export async function finishCoinbasePayment(
+export async function finishCoinbaseCommercePayment(
   jwt: string,
   code: RichCow.Payment['coinbaseCommerceChargeCode']
 ): Promise<void> {

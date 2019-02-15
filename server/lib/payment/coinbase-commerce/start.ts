@@ -11,7 +11,7 @@ import {
   NAME
 } from 'constants/config';
 
-export async function startCoinbasePayment(
+export async function startCoinbaseCommercePayment(
   paymentId: RichCow.Payment['id']
 ): Promise<{ url: string }> {
   // Get payment

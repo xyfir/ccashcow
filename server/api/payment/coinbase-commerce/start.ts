@@ -1,12 +1,12 @@
 import { NextFunction, Response, Request } from 'express';
-import { startCoinbasePayment } from 'lib/payment/coinbase/start';
+import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
 
-export function api_startCoinbasePayment(
+export function api_startCoinbaseCommercePayment(
   req: Request,
   res: Response,
   next: NextFunction
 ): void {
-  startCoinbasePayment(req.body.paymentId)
+  startCoinbaseCommercePayment(req.body.paymentId)
     .then(info => res.status(200).json(info))
     .catch(next);
 }
