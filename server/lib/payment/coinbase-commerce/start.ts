@@ -3,7 +3,6 @@ import { RichCow } from 'types/rich-cow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 import {
-  COINBASE_WEBHOOK_SECRET,
   COINBASE_API_KEY,
   RICH_COW_WEB_URL,
   JWT_KEY,
@@ -24,18 +23,17 @@ export async function startCoinbaseCommercePayment(
   if (payment.methods.indexOf('coinbase-commerce') == -1)
     throw 'Payment method rejected';
 
-  // Generate tokens, one for webhook and one for redirect
-  const redirectJWT = await signJWT(payment, JWT_KEY);
-  const webhookJWT = await signJWT(payment, COINBASE_WEBHOOK_SECRET);
+  // Set method so we know a payment is in progress
+  payment.method = 'coinbase-commerce';
 
   // Create charge
-  const charge = await axios.post(
+  const jwt = await signJWT(payment, JWT_KEY);
+  const res = await axios.post(
     'https://api.commerce.coinbase.com/charges',
     {
       name: NAME,
-      metadata: { webhookJWT },
       local_price: { amount: payment.amount, currency: 'USD' },
-      redirect_url: `${RICH_COW_WEB_URL}?jwt=${redirectJWT}`,
+      redirect_url: `${RICH_COW_WEB_URL}?jwt=${jwt}`,
       pricing_type: 'fixed_price'
     },
     {
@@ -46,5 +44,10 @@ export async function startCoinbaseCommercePayment(
     }
   );
 
-  return { url: charge.data.data.hosted_url };
+  // Save Charge code
+  payment.coinbaseCommerceChargeCode = res.data.data.code;
+  await storage.setItem(`payment-${payment.id}`, payment);
+
+  // Return URL to charge hosted on Coinbase Commerce
+  return { url: res.data.data.hosted_url };
 }
