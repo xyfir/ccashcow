@@ -5,6 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "watch-coverage": "npm run coverage -- --watch",
+    "watch-start": "nodemon --watch dist -e js -L --inspect=0.0.0.0:9229 ./dist/app.js",
     "watch-build": "npm run build -- -w",
     "watch-test": "npm run test -- --watch",
     "coverage": "npm run test -- --coverage",
@@ -32,6 +33,7 @@
     "@types/node-persist": "0.0.33",
     "jest": "^24.1.0",
     "jest-extended": "^0.11.1",
+    "nodemon": "^1.18.10",
     "typescript": "^3.3.3"
   }
 }
