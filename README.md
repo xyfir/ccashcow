@@ -40,10 +40,10 @@ As simple as Rich Cow is, you'll still need to download, configure, build, and i
 git clone https://github.com/Xyfir/rich-cow.git
 cd rich-cow/server
 npm install
-cp constants/config.default.ts constants/config.ts
+touch .env
 ```
 
-Now open up `rich-cow/server/constants/config.ts` in your editor and fill out the values. Everything is explained there.
+Now open up `rich-cow/server/.env` in your editor and fill out the values. See the `RichCow.Env.Common` and `RichCow.Env.Server` interfaces in [types/rich-cow.d.ts](https://github.com/Xyfir/rich-cow/blob/master/types/rich-cow.d.ts) for expected environment variables. Format is `KEY=VALUE` (`PROD=true`, `NAME="Rich Cow"`, etc).
 
 ```bash
 npm run build
@@ -57,14 +57,18 @@ At this point the setup is based on your environment and what your needs are. Pr
 ```bash
 cd ../web
 npm install
-cp constants/config.default.js constants/config.js
+touch .env
 ```
 
-Now open up `rich-cow/web/constants/config.js` in your editor and fill out the values. Most will be the same as the server's config.
+Now open up `rich-cow/web/.env` in your editor and fill out the values. See the `RichCow.Env.Common` and `RichCow.Env.Web` interfaces in [types/rich-cow.d.ts](https://github.com/Xyfir/rich-cow/blob/master/types/rich-cow.d.ts) for expected environment variables.
 
 ```bash
 npm run build
 ```
+
+## Docker
+
+Docker support is currently being added. You should use the Dockerfiles within the server and web directories to run containers using the .env files. See the docker-compose.yml for a (development environment) example.
 
 ## Integration Into Your App
 
