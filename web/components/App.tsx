@@ -1,9 +1,18 @@
 import { MuiThemeProvider, CssBaseline, Button } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import { Payment } from 'components/Payment';
+import { RichCow } from 'types/rich-cow';
 import * as React from 'react';
-import { theme } from 'constants/theme';
+import { theme } from 'lib/theme';
 import { hot } from 'react-hot-loader';
+
+declare global {
+  namespace NodeJS {
+    interface Process {
+      enve: RichCow.Env.Web;
+    }
+  }
+}
 
 const _App = () => (
   <MuiThemeProvider theme={theme}>

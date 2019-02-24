@@ -1,5 +1,4 @@
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
-import { NAME, APP_PAYMENT_URL } from 'constants/config';
 import { formatAmount } from 'lib/format-amount';
 import { RichCow } from 'types/rich-cow';
 import * as React from 'react';
@@ -67,7 +66,9 @@ class _Payment extends React.Component<
         if (payment.paid) throw 'Payment already paid';
         if (payment.method) this.waitForPayment();
       })
-      .catch(() => location.replace(APP_PAYMENT_URL.replace('{{JWT}}', jwt)));
+      .catch(() =>
+        location.replace(process.enve.APP_PAYMENT_URL.replace('{{JWT}}', jwt))
+      );
   }
 
   onPay(method: RichCow.PaymentMethod) {
@@ -84,7 +85,9 @@ class _Payment extends React.Component<
         api
           .post(`/payment/${method}/finish`, parse(location.search.substr(1)))
           .then(res =>
-            location.replace(APP_PAYMENT_URL.replace('{{JWT}}', res.data.jwt))
+            location.replace(
+              process.enve.APP_PAYMENT_URL.replace('{{JWT}}', res.data.jwt)
+            )
           )
           .catch(err => console.warn('waitForPayment()', err)),
       5000
@@ -136,10 +139,10 @@ class _Payment extends React.Component<
         )}
         <footer className={classes.footer}>
           <Button
-            href={APP_PAYMENT_URL.replace('{{JWT}}', jwt)}
+            href={process.enve.APP_PAYMENT_URL.replace('{{JWT}}', jwt)}
             color="secondary"
           >
-            Back to {NAME}
+            Back to {process.enve.NAME}
           </Button>
         </footer>
       </main>

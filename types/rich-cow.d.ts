@@ -91,6 +91,31 @@ export namespace RichCow {
       COINBASE_COMMERCE_API_KEY?: string;
     }
 
-    export interface Web extends RichCow.Env.Common {}
+    export interface Web extends RichCow.Env.Common {
+      /**
+       * Port for the Webpack dev server. Only needed for Rich Cow developers
+       */
+      PORT: number;
+      /**
+       * Passed to Material-UI's `createMUITheme()`. Can be left an empty object
+       * https://material-ui.com/style/color/#color-tool
+       */
+      THEME: object;
+      /**
+       * URL to your app's favicon
+       */
+      FAVICON: string;
+      /**
+       * Where your users will be redirected to from Rich Cow. `{{JWT}}` will be
+       *  replaced with the actual JWT.
+       * @example "https://example.com/purchase?jwt={{JWT}}"
+       */
+      APP_PAYMENT_URL: string;
+      /**
+       * URL for Rich Cow's API (rich-cow-server)
+       * @example "https://example.com/api/rich-cow"
+       */
+      RICH_COW_API_URL: string;
+    }
   }
 }
