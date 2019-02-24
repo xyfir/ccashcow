@@ -1,0 +1,42 @@
+version: '3'
+
+services:
+  server:
+    user: root
+    build:
+      dockerfile: ./server/Dockerfile
+      context: .
+      args:
+        NODE_ENV: development
+    ports:
+      - 2010:2010
+      - 9229:9229
+    volumes:
+      - ./server:/opt/rich-cow/server:delegated
+      - ./server/package.json:/opt/rich-cow/server/package.json
+      - ./server/package-lock.json:/opt/rich-cow/server/package-lock.json
+      - unused1:/opt/rich-cow/server/node_modules
+      - database:/opt/rich-cow/database
+    command: npm run watch-start
+    env_file: ./server/.env
+  web:
+    user: root
+    build:
+      dockerfile: ./web/Dockerfile
+      context: .
+      args:
+        NODE_ENV: development
+    ports:
+      - 2011:2011
+    volumes:
+      - ./web:/opt/rich-cow/web:delegated
+      - ./web/package.json:/opt/rich-cow/web/package.json
+      - ./web/package-lock.json:/opt/rich-cow/web/package-lock.json
+      - unused2:/opt/rich-cow/web/node_modules
+    command: npm run start
+    env_file: ./web/.env
+
+volumes:
+  unused1:
+  unused2:
+  database:
