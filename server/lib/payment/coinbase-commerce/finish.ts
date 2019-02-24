@@ -1,4 +1,3 @@
-import { JWT_KEY, STORAGE } from 'constants/config';
 import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
@@ -8,8 +7,8 @@ import axios from 'axios';
 export async function finishCoinbaseCommercePayment(
   jwt: string
 ): Promise<{ jwt: string }> {
-  const { id: paymentId } = await verifyJWT(jwt, JWT_KEY);
-  await storage.init(STORAGE);
+  const { id: paymentId } = await verifyJWT(jwt, process.enve.JWT_KEY);
+  await storage.init(process.enve.STORAGE);
   const payment: RichCow.Payment = await storage.getItem(
     `payment-${paymentId}`
   );
@@ -35,5 +34,5 @@ export async function finishCoinbaseCommercePayment(
   payment.paid = Date.now();
   await storage.setItem(`payment-${payment.id}`, payment);
 
-  return { jwt: await signJWT(payment, JWT_KEY) };
+  return { jwt: await signJWT(payment, process.enve.JWT_KEY) };
 }

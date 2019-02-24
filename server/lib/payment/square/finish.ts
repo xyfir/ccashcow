@@ -3,20 +3,14 @@ import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
-import {
-  SQUARE_ACCESS_TOKEN,
-  SQUARE_LOCATION_KEY,
-  JWT_KEY,
-  STORAGE
-} from 'constants/config';
 
 export async function finishSquarePayment(
   jwt: string,
   squareTransactionId: string
 ): Promise<{ jwt: string }> {
-  const { id: paymentId } = await verifyJWT(jwt, JWT_KEY);
+  const { id: paymentId } = await verifyJWT(jwt, process.enve.JWT_KEY);
 
-  await storage.init(STORAGE);
+  await storage.init(process.enve.STORAGE);
   const payment: RichCow.Payment = await storage.getItem(
     `payment-${paymentId}`
   );
@@ -25,8 +19,10 @@ export async function finishSquarePayment(
 
   // Verify transaction with Square
   const res = await axios.get(
-    `https://connect.squareup.com/v2/locations/${SQUARE_LOCATION_KEY}/transactions/${squareTransactionId}`,
-    { headers: { Authorization: `Bearer ${SQUARE_ACCESS_TOKEN}` } }
+    `https://connect.squareup.com/v2/locations/${
+      process.enve.SQUARE_LOCATION_KEY
+    }/transactions/${squareTransactionId}`,
+    { headers: { Authorization: `Bearer ${process.enve.SQUARE_ACCESS_TOKEN}` } }
   );
   if (res.data.transaction.reference_id != payment.id.toString())
     throw 'Invalid transaction';
@@ -36,5 +32,5 @@ export async function finishSquarePayment(
   payment.squareTransactionId = squareTransactionId;
   await storage.setItem(`payment-${payment.id}`, payment);
 
-  return { jwt: await signJWT(payment, JWT_KEY) };
+  return { jwt: await signJWT(payment, process.enve.JWT_KEY) };
 }

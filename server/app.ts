@@ -1,15 +1,23 @@
 import 'app-module-path/register';
-import { RICH_COW_WEB_URL, WEB_DIRECTORY, PORT, PROD } from 'constants/config';
+import 'enve';
 import * as bodyParser from 'body-parser';
 import * as Express from 'express';
-import { resolve } from 'path';
+import { RichCow } from 'types/rich-cow';
 import { router } from 'api/router';
 
+declare global {
+  namespace NodeJS {
+    interface Process {
+      enve: RichCow.Env.Server;
+    }
+  }
+}
+
 const app = Express();
-if (!PROD) {
+if (!process.enve.PROD) {
   // Needed to allow communication from webpack-dev-server host
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', RICH_COW_WEB_URL);
+    res.header('Access-Control-Allow-Origin', process.enve.RICH_COW_WEB_URL);
     res.header(
       'Access-Control-Allow-Methods',
       'GET, POST, OPTIONS, PUT, DELETE'
@@ -21,7 +29,6 @@ if (!PROD) {
     next();
   });
 }
-app.use('/static', Express.static(resolve(WEB_DIRECTORY, 'dist')));
 app.use(bodyParser.urlencoded({ extended: true, limit: '2mb' }));
 app.use(bodyParser.json({ limit: '2mb' }));
 app.use('/api', router);
@@ -40,7 +47,6 @@ app.use(
     }
   }
 );
-app.get('/*', (req, res) =>
-  res.sendFile(resolve(WEB_DIRECTORY, 'dist', 'index.html'))
+app.listen(process.enve.PORT, () =>
+  console.log('Listening on', process.enve.PORT)
 );
-app.listen(PORT, () => console.log('Listening on', PORT));

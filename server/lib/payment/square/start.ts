@@ -1,21 +1,13 @@
 import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
 import axios from 'axios';
-import {
-  SQUARE_ACCESS_TOKEN,
-  SQUARE_LOCATION_KEY,
-  RICH_COW_WEB_URL,
-  JWT_KEY,
-  STORAGE,
-  NAME
-} from 'constants/config';
 import { signJWT } from 'lib/jwt/sign';
 
 export async function startSquarePayment(
   paymentId: RichCow.Payment['id']
 ): Promise<{ url: string }> {
   // Get payment
-  await storage.init(STORAGE);
+  await storage.init(process.enve.STORAGE);
   const payment: RichCow.Payment = await storage.getItem(
     `payment-${paymentId}`
   );
@@ -27,14 +19,16 @@ export async function startSquarePayment(
   payment.method = 'square';
 
   // Create Checkout
-  const jwt = await signJWT(payment, JWT_KEY);
+  const jwt = await signJWT(payment, process.enve.JWT_KEY);
   const res = await axios.post(
-    `https://connect.squareup.com/v2/locations/${SQUARE_LOCATION_KEY}/checkouts`,
+    `https://connect.squareup.com/v2/locations/${
+      process.enve.SQUARE_LOCATION_KEY
+    }/checkouts`,
     {
       order: {
         line_items: [
           {
-            name: `${NAME} Payment`,
+            name: `${process.enve.NAME} Payment`,
             quantity: '1',
             base_price_money: {
               currency: 'USD',
@@ -44,14 +38,14 @@ export async function startSquarePayment(
         ],
         reference_id: payment.id.toString()
       },
-      redirect_url: `${RICH_COW_WEB_URL}?jwt=${jwt}`,
+      redirect_url: `${process.enve.RICH_COW_WEB_URL}?jwt=${jwt}`,
       reference_id: payment.id.toString(),
       idempotency_key:
         typeof test == 'undefined'
           ? payment.id.toString()
           : Date.now().toString()
     },
-    { headers: { Authorization: `Bearer ${SQUARE_ACCESS_TOKEN}` } }
+    { headers: { Authorization: `Bearer ${process.enve.SQUARE_ACCESS_TOKEN}` } }
   );
 
   // Checkout was created successfully so we can update the payment on disk

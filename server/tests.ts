@@ -1,5 +1,8 @@
+import 'jest-extended';
+import 'enve';
 import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/finish';
 import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
+import { finishSquarePayment } from 'lib/payment/square/finish';
 import { startSquarePayment } from 'lib/payment/square/start';
 import { getPayment } from 'lib/payment/get';
 import { verifyJWT } from 'lib/jwt/verify';
@@ -7,24 +10,16 @@ import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
-import {
-  SQUARE_LOCATION_KEY,
-  SQUARE_ACCESS_TOKEN,
-  JWT_KEY,
-  TESTS
-} from 'constants/config';
-import 'jest-extended';
-import { finishSquarePayment } from 'lib/payment/square/finish';
 
 beforeAll(async () => {
-  await storage.init(TESTS.STORAGE);
+  await storage.init(process.enve.TEST_STORAGE);
   for (let i = 1; i < 4; i++) await storage.removeItem(`payment-${i}`);
 });
 
 test('sign and verify jwt', async () => {
   const payment: RichCow.Payment = { id: 1, amount: 999, methods: ['square'] };
-  const encoded = await signJWT(payment, JWT_KEY);
-  const decoded = await verifyJWT(encoded, JWT_KEY);
+  const encoded = await signJWT(payment, process.enve.JWT_KEY);
+  const decoded = await verifyJWT(encoded, process.enve.JWT_KEY);
   expect(decoded.id).toBe(1);
   expect(decoded.amount).toBe(999);
   expect(decoded.methods).toMatchObject(['square']);
@@ -33,7 +28,7 @@ test('sign and verify jwt', async () => {
 test('get payment', async () => {
   const jwt = await signJWT(
     { id: 1, amount: 999, methods: ['square'] },
-    JWT_KEY
+    process.enve.JWT_KEY
   );
 
   let payment = await getPayment(jwt);
@@ -50,7 +45,7 @@ test('get payment', async () => {
 test('square payment', async () => {
   const _jwt = await signJWT(
     { id: 2, amount: 999, methods: ['square'] },
-    JWT_KEY
+    process.enve.JWT_KEY
   );
   await getPayment(_jwt);
   const { url } = await startSquarePayment(2);
@@ -59,7 +54,9 @@ test('square payment', async () => {
   expect(payment.method).toBe('square');
 
   const res = await axios.post(
-    `https://connect.squareup.com/v2/locations/${SQUARE_LOCATION_KEY}/transactions`,
+    `https://connect.squareup.com/v2/locations/${
+      process.enve.SQUARE_LOCATION_KEY
+    }/transactions`,
     {
       card_nonce: 'fake-card-nonce-ok',
       amount_money: {
@@ -75,12 +72,12 @@ test('square payment', async () => {
         country: 'US'
       }
     },
-    { headers: { Authorization: `Bearer ${SQUARE_ACCESS_TOKEN}` } }
+    { headers: { Authorization: `Bearer ${process.enve.SQUARE_ACCESS_TOKEN}` } }
   );
 
   const squareTransactionId: string = res.data.transaction.id;
   const { jwt } = await finishSquarePayment(_jwt, squareTransactionId);
-  await expect(verifyJWT(jwt, JWT_KEY)).not.toReject();
+  await expect(verifyJWT(jwt, process.enve.JWT_KEY)).not.toReject();
   payment = await storage.getItem('payment-2');
   expect(payment.paid).toBeNumber();
   expect(payment.squareTransactionId).toBe(squareTransactionId);
@@ -89,7 +86,7 @@ test('square payment', async () => {
 test('coinbase commerce payment', async () => {
   const _jwt = await signJWT(
     { id: 3, amount: 1, methods: ['coinbase-commerce'] },
-    JWT_KEY
+    process.enve.JWT_KEY
   );
   await getPayment(_jwt);
   const { url } = await startCoinbaseCommercePayment(3);
@@ -99,7 +96,7 @@ test('coinbase commerce payment', async () => {
   expect(payment.coinbaseCommerceChargeCode).toBeString();
 
   const { jwt } = await finishCoinbaseCommercePayment(_jwt);
-  await expect(verifyJWT(jwt, JWT_KEY)).not.toReject();
+  await expect(verifyJWT(jwt, process.enve.JWT_KEY)).not.toReject();
   payment = await storage.getItem('payment-3');
   expect(payment.paid).toBeNumber();
 });
