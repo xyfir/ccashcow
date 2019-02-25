@@ -68,6 +68,11 @@ export namespace RichCow {
        */
       TEST_STORAGE: object;
       /**
+       * Absolute path for rich-cow-web.
+       * @example "/path/to/rich-cow/web"
+       */
+      WEB_DIRECTORY: string;
+      /**
        * URL for Rich Cow's web client (where your users will access it)
        * @example "https://example.com/rich-cow"
        */
