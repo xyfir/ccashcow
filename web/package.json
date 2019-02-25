@@ -1,6 +1,6 @@
 {
   "name": "rich-cow-web",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "description": "",
   "main": "",
   "scripts": {
@@ -17,6 +17,7 @@
   "dependencies": {
     "@material-ui/core": "^3.9.2",
     "axios": "^0.18.0",
+    "dotenv": "^6.2.0",
     "enve": "^1.0.0",
     "notistack": "^0.4.2",
     "qs": "^6.6.0",
@@ -31,6 +32,7 @@
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "@babel/preset-typescript": "^7.1.0",
+    "@types/dotenv": "^6.1.0",
     "@types/qs": "^6.5.1",
     "@types/react": "^16.8.2",
     "@types/react-dom": "^16.8.0",

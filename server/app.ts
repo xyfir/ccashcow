@@ -1,5 +1,8 @@
 import 'app-module-path/register';
+import { config } from 'dotenv';
+config();
 import 'enve';
+
 import * as bodyParser from 'body-parser';
 import * as Express from 'express';
 import { RichCow } from 'types/rich-cow';

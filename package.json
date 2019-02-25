@@ -1,14 +1,14 @@
 {
   "name": "rich-cow",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "description": "Dead simple user payment system so easy a cow could do it.",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "rich-cow-server": "2.0.0-alpha.1",
-    "rich-cow-web": "2.0.0-alpha.1"
+    "rich-cow-server": "2.0.0-alpha.2",
+    "rich-cow-web": "2.0.0-alpha.2"
   },
   "prettier": {
     "singleQuote": true

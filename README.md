@@ -66,10 +66,6 @@ Now open up `rich-cow/web/.env` in your editor and fill out the values. See the 
 npm run build
 ```
 
-## Docker
-
-Docker support is currently being added. You should use the Dockerfiles within the server and web directories to run containers using the .env files. See the docker-compose.yml for a (development environment) example.
-
 ## Integration Into Your App
 
 This part is largely up to you, so it's important to understand the flow of data between your app and Rich Cow:

@@ -1,5 +1,7 @@
-import 'jest-extended';
+import { config } from 'dotenv';
+config();
 import 'enve';
+
 import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/finish';
 import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
 import { finishSquarePayment } from 'lib/payment/square/finish';
@@ -10,6 +12,7 @@ import * as storage from 'node-persist';
 import { RichCow } from 'types/rich-cow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
+import 'jest-extended';
 
 beforeAll(async () => {
   await storage.init(process.enve.TEST_STORAGE);
