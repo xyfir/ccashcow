@@ -51,6 +51,11 @@ export namespace RichCow {
        * Your application's name as you want it displayed to users
        */
       NAME: string;
+      /**
+       * Base path (for URL) of static files
+       * @example "/static/"
+       */
+      STATIC_PATH: string;
     }
 
     export interface Server extends RichCow.Env.Common {
