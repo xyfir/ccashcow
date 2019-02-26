@@ -77,7 +77,10 @@ module.exports = {
       }, {})
     }),
     new HtmlWebpackPlugin({
-      templateParameters: process.enve,
+      templateParameters: {
+        FAVICON: process.enve.FAVICON,
+        NAME: process.enve.NAME
+      },
       minify: process.enve.PROD,
       template: 'template.html'
     }),
