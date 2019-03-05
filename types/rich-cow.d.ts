@@ -44,13 +44,13 @@ export namespace RichCow {
   export namespace Env {
     export interface Common {
       /**
-       * Is this a production environment?
-       */
-      PROD: boolean;
-      /**
        * Your application's name as you want it displayed to users
        */
       NAME: string;
+      /**
+       * Is this a production environment?
+       */
+      NODE_ENV: "development" | "production";
       /**
        * Base path (for URL) of static files
        * @example "/static/"

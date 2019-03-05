@@ -18,7 +18,7 @@ declare global {
 }
 
 const app = Express();
-if (!process.enve.PROD) {
+if (process.enve.NODE_ENV == 'development') {
   // Needed to allow communication from webpack-dev-server host
   app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', process.enve.RICH_COW_WEB_URL);

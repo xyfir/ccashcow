@@ -6,6 +6,8 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 const path = require('path');
 
+const PROD = process.enve.NODE_ENV == 'production';
+
 module.exports = {
   mode: process.enve.NODE_ENV,
 
@@ -13,7 +15,7 @@ module.exports = {
 
   output: {
     publicPath: process.enve.STATIC_PATH,
-    filename: process.enve.PROD ? '[name].[hash].js' : '[name].js',
+    filename: PROD ? '[name].[hash].js' : '[name].js',
     pathinfo: false,
     path: path.resolve(__dirname, 'dist')
   },
@@ -81,11 +83,11 @@ module.exports = {
         FAVICON: process.enve.FAVICON,
         NAME: process.enve.NAME
       },
-      minify: process.enve.PROD,
+      minify: PROD,
       template: 'template.html'
     }),
-    process.enve.PROD ? new CompressionPlugin({ filename: '[path].gz' }) : null,
-    process.enve.PROD ? null : new webpack.HotModuleReplacementPlugin()
+    PROD ? new CompressionPlugin({ filename: '[path].gz' }) : null,
+    PROD ? null : new webpack.HotModuleReplacementPlugin()
   ].filter(p => p !== null),
 
   devtool: 'inline-source-map',

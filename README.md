@@ -43,7 +43,7 @@ npm install
 touch .env
 ```
 
-Now open up `rich-cow/server/.env` in your editor and fill out the values. See the `RichCow.Env.Common` and `RichCow.Env.Server` interfaces in [types/rich-cow.d.ts](https://github.com/Xyfir/rich-cow/blob/master/types/rich-cow.d.ts) for expected environment variables. Format is `KEY=VALUE` (`PROD=true`, `NAME="Rich Cow"`, etc).
+Now open up `rich-cow/server/.env` in your editor and fill out the values. See the `RichCow.Env.Common` and `RichCow.Env.Server` interfaces in [types/rich-cow.d.ts](https://github.com/Xyfir/rich-cow/blob/master/types/rich-cow.d.ts) for expected environment variables. Format is `KEY=VALUE` (`PORT=1234`, `NAME="Rich Cow"`, etc).
 
 ```bash
 npm run build
