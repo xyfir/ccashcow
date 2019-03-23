@@ -1,2 +1,2 @@
 import axios from 'axios';
-export const api = axios.create({ baseURL: process.enve.RICH_COW_API_URL });
+export const api = axios.create({ baseURL: process.enve.CCASHCOW_API_URL });

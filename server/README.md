@@ -1,1 +1,1 @@
-The server portion of [rich-cow](https://github.com/Xyfir/rich-cow).
+The server portion of [ccashcow](https://github.com/Xyfir/ccashcow).

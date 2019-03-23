@@ -1,7 +1,7 @@
 import { MuiThemeProvider, CssBaseline, Button } from '@material-ui/core';
 import { SnackbarProvider } from 'notistack';
 import { Payment } from 'components/Payment';
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 import * as React from 'react';
 import { theme } from 'lib/theme';
 import { hot } from 'react-hot-loader';
@@ -9,7 +9,7 @@ import { hot } from 'react-hot-loader';
 declare global {
   namespace NodeJS {
     interface Process {
-      enve: RichCow.Env.Web;
+      enve: CCashCow.Env.Web;
     }
   }
 }

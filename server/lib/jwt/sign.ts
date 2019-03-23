@@ -1,8 +1,8 @@
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 import { sign } from 'jsonwebtoken';
 
 export function signJWT(
-  payment: RichCow.Payment,
+  payment: CCashCow.Payment,
   secret: string
 ): Promise<string> {
   return new Promise((resolve, reject) =>

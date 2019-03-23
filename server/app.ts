@@ -5,14 +5,14 @@ import 'enve';
 
 import * as bodyParser from 'body-parser';
 import * as Express from 'express';
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 import { resolve } from 'path';
 import { router } from 'api/router';
 
 declare global {
   namespace NodeJS {
     interface Process {
-      enve: RichCow.Env.Server;
+      enve: CCashCow.Env.Server;
     }
   }
 }
@@ -21,7 +21,7 @@ const app = Express();
 if (process.enve.NODE_ENV == 'development') {
   // Needed to allow communication from webpack-dev-server host
   app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', process.enve.RICH_COW_WEB_URL);
+    res.header('Access-Control-Allow-Origin', process.enve.CCASHCOW_WEB_URL);
     res.header(
       'Access-Control-Allow-Methods',
       'GET, POST, OPTIONS, PUT, DELETE'

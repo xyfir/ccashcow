@@ -1,11 +1,11 @@
 import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 
-export async function getPayment(jwt: string): Promise<RichCow.Payment> {
+export async function getPayment(jwt: string): Promise<CCashCow.Payment> {
   const provided = await verifyJWT(jwt, process.enve.JWT_KEY);
   await storage.init(process.enve.STORAGE);
-  let saved: RichCow.Payment = await storage.getItem(`payment-${provided.id}`);
+  let saved: CCashCow.Payment = await storage.getItem(`payment-${provided.id}`);
 
   // Save payment
   if (saved === undefined) {

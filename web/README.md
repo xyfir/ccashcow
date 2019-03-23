@@ -1,1 +1,1 @@
-The web client portion of [rich-cow](https://github.com/Xyfir/rich-cow).
+The web client portion of [ccashcow](https://github.com/Xyfir/ccashcow).

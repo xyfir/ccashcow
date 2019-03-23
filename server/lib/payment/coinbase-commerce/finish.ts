@@ -1,6 +1,6 @@
 import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 
@@ -9,7 +9,7 @@ export async function finishCoinbaseCommercePayment(
 ): Promise<{ jwt: string }> {
   const { id: paymentId } = await verifyJWT(jwt, process.enve.JWT_KEY);
   await storage.init(process.enve.STORAGE);
-  const payment: RichCow.Payment = await storage.getItem(
+  const payment: CCashCow.Payment = await storage.getItem(
     `payment-${paymentId}`
   );
   if (payment.method != 'coinbase-commerce')

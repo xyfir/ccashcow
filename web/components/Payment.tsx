@@ -1,6 +1,6 @@
 import { withSnackbar, InjectedNotistackProps } from 'notistack';
 import { formatAmount } from 'lib/format-amount';
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 import * as React from 'react';
 import { parse } from 'qs';
 import { api } from 'lib/api';
@@ -44,7 +44,7 @@ const styles = createStyles({
 });
 
 interface PaymentState {
-  payment?: RichCow.Payment;
+  payment?: CCashCow.Payment;
   loading: boolean;
   jwt?: string;
 }
@@ -61,7 +61,7 @@ class _Payment extends React.Component<
     api
       .get('/payment', { params: { jwt } })
       .then(res => {
-        const payment: RichCow.Payment = res.data;
+        const payment: CCashCow.Payment = res.data;
         this.setState({ payment, loading: false, jwt });
         if (payment.paid) throw 'Payment already paid';
         if (payment.method) this.waitForPayment();
@@ -71,7 +71,7 @@ class _Payment extends React.Component<
       );
   }
 
-  onPay(method: RichCow.PaymentMethod) {
+  onPay(method: CCashCow.PaymentMethod) {
     api
       .post(`/payment/${method}/start`, { paymentId: this.state.payment.id })
       .then(res => location.replace(res.data.url))

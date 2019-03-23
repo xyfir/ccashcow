@@ -1,4 +1,4 @@
-export namespace RichCow {
+export namespace CCashCow {
   export type PaymentMethod = 'square' | 'coinbase-commerce';
 
   export interface Payment {
@@ -50,7 +50,7 @@ export namespace RichCow {
       /**
        * Is this a production environment?
        */
-      NODE_ENV: "development" | "production";
+      NODE_ENV: 'development' | 'production';
       /**
        * Base path (for URL) of static files
        * @example "/static/"
@@ -58,13 +58,13 @@ export namespace RichCow {
       STATIC_PATH: string;
     }
 
-    export interface Server extends RichCow.Env.Common {
+    export interface Server extends CCashCow.Env.Common {
       /**
        * Port the API will be hosted on
        */
       PORT: number;
       /**
-       * This is the shared HS256 key used by Rich Cow and your app to sign and verify
+       * This is the shared HS256 key used by CCashCow and your app to sign and verify
        *  JSON Web Tokens with.
        */
       JWT_KEY: string;
@@ -73,15 +73,15 @@ export namespace RichCow {
        */
       TEST_STORAGE: object;
       /**
-       * Absolute path for rich-cow-web.
-       * @example "/path/to/rich-cow/web"
+       * Absolute path for ccashcow-web.
+       * @example "/path/to/ccashcow/web"
        */
       WEB_DIRECTORY: string;
       /**
-       * URL for Rich Cow's web client (where your users will access it)
-       * @example "https://example.com/rich-cow"
+       * URL for CCashCow's web client (where your users will access it)
+       * @example "https://example.com/ccashcow"
        */
-      RICH_COW_WEB_URL: string;
+      CCASHCOW_WEB_URL: string;
       /**
        * Your access token for Square's API if you wish to accept credit cards
        */
@@ -101,9 +101,9 @@ export namespace RichCow {
       COINBASE_COMMERCE_API_KEY?: string;
     }
 
-    export interface Web extends RichCow.Env.Common {
+    export interface Web extends CCashCow.Env.Common {
       /**
-       * Port for the Webpack dev server. Only needed for Rich Cow developers
+       * Port for the Webpack dev server. Only needed for CCashCow developers
        */
       PORT: number;
       /**
@@ -116,16 +116,16 @@ export namespace RichCow {
        */
       FAVICON: string;
       /**
-       * Where your users will be redirected to from Rich Cow. `{{JWT}}` will be
+       * Where your users will be redirected to from CCashCow. `{{JWT}}` will be
        *  replaced with the actual JWT.
        * @example "https://example.com/purchase?jwt={{JWT}}"
        */
       APP_PAYMENT_URL: string;
       /**
-       * URL for Rich Cow's API (rich-cow-server)
-       * @example "https://example.com/api/rich-cow"
+       * URL for CCashCow's API (ccashcow-server)
+       * @example "https://example.com/api/ccashcow"
        */
-      RICH_COW_API_URL: string;
+      CCASHCOW_API_URL: string;
     }
   }
 }

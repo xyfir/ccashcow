@@ -1,14 +1,14 @@
 import * as storage from 'node-persist';
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 
 export async function startCoinbaseCommercePayment(
-  paymentId: RichCow.Payment['id']
+  paymentId: CCashCow.Payment['id']
 ): Promise<{ url: string }> {
   // Get payment
   await storage.init(process.enve.STORAGE);
-  const payment: RichCow.Payment = await storage.getItem(
+  const payment: CCashCow.Payment = await storage.getItem(
     `payment-${paymentId}`
   );
   if (!payment) throw 'Payment does not exist';
@@ -26,7 +26,7 @@ export async function startCoinbaseCommercePayment(
     {
       name: process.enve.NAME,
       local_price: { amount: payment.amount / 100, currency: 'USD' },
-      redirect_url: `${process.enve.RICH_COW_WEB_URL}?jwt=${jwt}`,
+      redirect_url: `${process.enve.CCASHCOW_WEB_URL}?jwt=${jwt}`,
       pricing_type: 'fixed_price'
     },
     {

@@ -9,7 +9,7 @@ import { startSquarePayment } from 'lib/payment/square/start';
 import { getPayment } from 'lib/payment/get';
 import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
-import { RichCow } from 'types/rich-cow';
+import { CCashCow } from 'types/ccashcow';
 import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 import 'jest-extended';
@@ -20,7 +20,7 @@ beforeAll(async () => {
 });
 
 test('sign and verify jwt', async () => {
-  const payment: RichCow.Payment = { id: 1, amount: 999, methods: ['square'] };
+  const payment: CCashCow.Payment = { id: 1, amount: 999, methods: ['square'] };
   const encoded = await signJWT(payment, process.enve.JWT_KEY);
   const decoded = await verifyJWT(encoded, process.enve.JWT_KEY);
   expect(decoded.id).toBe(1);
@@ -37,7 +37,7 @@ test('get payment', async () => {
   let payment = await getPayment(jwt);
   expect(payment.id).toBe(1);
 
-  const _payment: RichCow.Payment = await storage.getItem('payment-1');
+  const _payment: CCashCow.Payment = await storage.getItem('payment-1');
   expect(_payment).not.toBeUndefined();
   expect(_payment.id).toBe(1);
 
@@ -53,7 +53,7 @@ test('square payment', async () => {
   await getPayment(_jwt);
   const { url } = await startSquarePayment(2);
   expect(url).toStartWith('https://connect.squareup.com/v2/checkout?c=');
-  let payment: RichCow.Payment = await storage.getItem('payment-2');
+  let payment: CCashCow.Payment = await storage.getItem('payment-2');
   expect(payment.method).toBe('square');
 
   const res = await axios.post(
@@ -94,7 +94,7 @@ test('coinbase commerce payment', async () => {
   await getPayment(_jwt);
   const { url } = await startCoinbaseCommercePayment(3);
   expect(url).toStartWith('https://commerce.coinbase.com/charges/');
-  let payment: RichCow.Payment = await storage.getItem('payment-3');
+  let payment: CCashCow.Payment = await storage.getItem('payment-3');
   expect(payment.method).toBe('coinbase-commerce');
   expect(payment.coinbaseCommerceChargeCode).toBeString();
 
