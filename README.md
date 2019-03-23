@@ -1,6 +1,6 @@
 # CCashCow
 
-Dead simple user payment system so simple a ~~caveman~~ **cow** could do it.
+Accept credit cards and cryptocurrencies. Dead simple user payment system so simple a ~~caveman~~ **cow** could do it.
 
 Turn your app into a ca💲h c🐄w.
 
@@ -15,7 +15,7 @@ CCashCow is a small app that sits in the middle between your application and the
 # Features
 
 - Accept **c**redit **c**ards and debit cards with [Square](https://squareup.com/i/XYFIRLLC00)
-- Accept popular cryptocurrencies like Bitcoin with [**C**oinbase **C**ommerce](https://commerce.coinbase.com/)
+- Accept popular **c**rypto**c**urrencies like Bitcoin with [**C**oinbase **C**ommerce](https://commerce.coinbase.com/)
 - No dependencies other than Node and what npm will install
   - Older Node versions not actively supported
 - No database needed

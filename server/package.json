@@ -1,7 +1,7 @@
 {
   "name": "ccashcow-server",
   "version": "2.0.0-beta.1",
-  "description": "Dead simple user payment system so easy a cow could do it.",
+  "description": "Accept credit cards and cryptocurrencies. Dead simple user payment system so easy a cow could do it.",
   "main": "dist/app.js",
   "scripts": {
     "watch-coverage": "npm run coverage -- --watch",
@@ -22,20 +22,20 @@
     "app-module-path": "^2.2.0",
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
-    "dotenv": "^6.2.0",
-    "enve": "^1.0.0",
+    "dotenv": "^7.0.0",
+    "enve": "^1.0.1",
     "express": "^4.16.4",
-    "jsonwebtoken": "^8.5.0",
+    "jsonwebtoken": "^8.5.1",
     "node-persist": "^3.0.4"
   },
   "devDependencies": {
     "@types/dotenv": "^6.1.0",
-    "@types/jest": "^24.0.9",
-    "@types/jsonwebtoken": "^8.3.0",
+    "@types/jest": "^24.0.11",
+    "@types/jsonwebtoken": "^8.3.2",
     "@types/node-persist": "0.0.33",
-    "jest": "^24.1.0",
+    "jest": "^24.5.0",
     "jest-extended": "^0.11.1",
     "nodemon": "^1.18.10",
-    "typescript": "^3.3.3333"
+    "typescript": "^3.3.4000"
   }
 }
