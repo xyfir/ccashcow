@@ -1,25 +1,22 @@
-# CCashCow
+# CCashCow 💳💲🐄
 
 Accept credit cards and cryptocurrencies. Dead simple user payment system so simple a ~~caveman~~ **cow** could do it.
 
-Turn your app into a ca💲h c🐄w.
+CCashCow is a small app that sits between your application and the payment processors it uses. CCashCow offloads as much of the logic and user-interaction as possible to the forms maintained by and hosted on the payment processors themselves. Your app in turn offloads to CCashCow everything but the bare minimum needed for your app to accept payments. The end result is a system that's straightforward for developers and users, secure, easy to mantain, and as customizable as possible without introducing too much complexity.
 
----
+![](https://i.imgur.com/bDtQ3yF.png)
 
-CCashCow is a small app that sits in the middle between your application and the payment processors it uses. CCashCow offloads as much of the logic and user-interaction as possible to the forms maintained by and hosted on the payment processors themselves. Your app in turn offloads to CCashCow everything but the bare minimum needed for your app to accept payments. The end result is a system that's straightforward for developers and users, secure, easy to mantain, and as customizable as possible without introducing too much complexity.
-
-**Will it continue receiving updates?** Yes. It was built for and is mantained by [Ptorx](https://ptorx.com) and other projects in the [Xyfir Network](https://www.xyfir.com/network).
-
-**What's it look like?** However you want it to, but for the default theme, see [Screenshots](#screenshots).
+Built and mantained by **[Ptorx](https://ptorx.com)** and other **[Xyfir](https://www.xyfir.com)** projects.
 
 # Features
 
 - Accept **c**redit **c**ards and debit cards with [Square](https://squareup.com/i/XYFIRLLC00)
-- Accept popular **c**rypto**c**urrencies like Bitcoin with [**C**oinbase **C**ommerce](https://commerce.coinbase.com/)
+- Accept popular **c**rypto**c**urrencies like Bitcoin with [**C**oinbase **C**ommerce](https://commerce.coinbase.com)
+- Configurable fiat currency
 - No dependencies other than Node and what npm will install
   - Older Node versions not actively supported
 - No database needed
-  - Data is saved in simple JSON files stored to disk via [node-persist](https://www.npmjs.com/package/node-persist)
+  - Data is saved on disk in simple JSON files
 - Standalone server and web client
   - Easy integration into new and existing applications of any stack
 - JSON Web Tokens (JWT)
@@ -85,9 +82,3 @@ To be a bit more specific:
 ### Payment JWT Payload
 
 Check the [CCashCow.Payment](https://github.com/Xyfir/ccashcow/blob/master/types/ccashcow.d.ts) interface. Your app should only ever send a JWT containing `id`, `amount`, and `methods`; everything else will be added by CCashCow and sent back to your app with the user later. To check if a payment has been paid, all you have to do is check that `paid` is a number, and not `undefined`. Other values sent back to your app like `method` or `squareTransactionId` can be ignored unless you have some other use for them.
-
-# Screenshots
-
-This is about all there is to see. Once the user chooses a payment method they will be redirected to the payment processor's hosted form. Most of CCashCow's utility is in the work it does behind the scenes communicating with each payment processor API.
-
-<img src="https://i.imgur.com/TRPkDfv.png" alt="CCashCow payment form" height="400px" />
