@@ -103,7 +103,7 @@ class _Payment extends React.Component<
         {payment.method === undefined ? (
           <Paper className={classes.paper} elevation={1}>
             <Typography variant="h1" className={classes.title}>
-              {formatAmount(payment.amount / 100)} USD
+              {formatAmount(payment.amount * process.enve.CURRENCY_MODIFIER)}
             </Typography>
             <Typography>Select your payment method:</Typography>
 

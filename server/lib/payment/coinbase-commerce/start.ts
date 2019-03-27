@@ -25,7 +25,10 @@ export async function startCoinbaseCommercePayment(
     'https://api.commerce.coinbase.com/charges',
     {
       name: process.enve.NAME,
-      local_price: { amount: payment.amount / 100, currency: 'USD' },
+      local_price: {
+        currency: process.enve.CURRENCY,
+        amount: payment.amount * process.enve.CURRENCY_MODIFIER
+      },
       redirect_url: `${process.enve.CCASHCOW_WEB_URL}?jwt=${jwt}`,
       pricing_type: 'fixed_price'
     },

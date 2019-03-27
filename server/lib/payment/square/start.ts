@@ -1,7 +1,7 @@
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
-import axios from 'axios';
 import { signJWT } from 'lib/jwt/sign';
+import axios from 'axios';
 
 export async function startSquarePayment(
   paymentId: CCashCow.Payment['id']
@@ -31,7 +31,7 @@ export async function startSquarePayment(
             name: `${process.enve.NAME} Payment`,
             quantity: '1',
             base_price_money: {
-              currency: 'USD',
+              currency: process.enve.CURRENCY,
               amount: payment.amount
             }
           }

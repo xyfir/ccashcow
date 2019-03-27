@@ -2,13 +2,14 @@ export namespace CCashCow {
   export type PaymentMethod = 'square' | 'coinbase-commerce';
 
   export interface Payment {
-    // Provided by application
+    // Provided by main application to CCashCow
     /**
      * A unique identifier for the payment as created by the application.
      */
     id: number;
     /**
-     * Amount in USD cents.
+     * Amount in the smallest denomination of the applicable currency.
+     * @example 999 // $9.99 if currency is USD
      */
     amount: number;
     /**
@@ -56,6 +57,20 @@ export namespace CCashCow {
        * @example "/static/"
        */
       STATIC_PATH: string;
+      /**
+       * Code of the currency to use.
+       *  https://www.iban.com/currency-codes
+       * @example "USD"
+       * @example "CAD"
+       */
+      CURRENCY: string;
+      /**
+       * Because `amount` is provided in the smallest denomination of the
+       *  applicable currency, we need a modifier to convert the amount to the
+       *  currency's typical denomination.
+       * @example 0.01 // For USD, convert 999 cents to $9.99
+       */
+      CURRENCY_MODIFIER: number;
     }
 
     export interface Server extends CCashCow.Env.Common {
