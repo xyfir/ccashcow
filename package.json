@@ -1,19 +1,19 @@
 {
   "name": "ccashcow",
-  "version": "2.0.0-beta.1",
+  "version": "2.0.0",
   "description": "Accept credit cards and cryptocurrencies. Dead simple user payment system so easy a cow could do it.",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "ccashcow-server": "2.0.0-beta.1",
-    "ccashcow-web": "2.0.0-beta.1"
+    "ccashcow-server": "2.0.0",
+    "ccashcow-web": "2.0.0"
   },
   "prettier": {
     "singleQuote": true
   },
-  "author": "Xyfir, LLC <contact@xyfir.com> (https://www.xyfir.com/)",
+  "author": "Xyfir, LLC <contact@xyfir.com> (https://www.xyfir.com)",
   "license": "MIT",
   "repository": {
     "type": "git",
