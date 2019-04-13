@@ -1,14 +1,14 @@
 {
   "name": "ccashcow",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Accept credit cards and cryptocurrencies. Dead simple user payment system so easy a cow could do it.",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "ccashcow-server": "2.0.0",
-    "ccashcow-web": "2.0.0"
+    "ccashcow-server": "2.0.1",
+    "ccashcow-web": "2.0.1"
   },
   "prettier": {
     "singleQuote": true

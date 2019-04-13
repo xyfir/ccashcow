@@ -1,6 +1,6 @@
 {
   "name": "ccashcow-server",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Accept credit cards and cryptocurrencies. Dead simple user payment system so easy a cow could do it.",
   "main": "dist/app.js",
   "scripts": {
@@ -29,13 +29,13 @@
     "node-persist": "^3.0.4"
   },
   "devDependencies": {
-    "@types/dotenv": "^6.1.0",
+    "@types/dotenv": "^6.1.1",
     "@types/jest": "^24.0.11",
     "@types/jsonwebtoken": "^8.3.2",
     "@types/node-persist": "0.0.33",
-    "jest": "^24.5.0",
+    "jest": "^24.7.1",
     "jest-extended": "^0.11.1",
-    "nodemon": "^1.18.10",
-    "typescript": "^3.3.4000"
+    "nodemon": "^1.18.11",
+    "typescript": "^3.4.3"
   }
 }
