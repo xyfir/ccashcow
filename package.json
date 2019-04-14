@@ -22,5 +22,17 @@
   "bugs": {
     "url": "https://github.com/Xyfir/ccashcow/issues"
   },
-  "homepage": "https://github.com/Xyfir/ccashcow#readme"
+  "homepage": "https://github.com/Xyfir/ccashcow#readme",
+  "keywords": [
+    "square",
+    "squareup",
+    "crypto",
+    "cryptocurrencies",
+    "cryptocurrency",
+    "credit cards",
+    "cards",
+    "payments",
+    "coinbase",
+    "coinbase commerce"
+  ]
 }
