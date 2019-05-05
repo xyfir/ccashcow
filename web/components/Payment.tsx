@@ -45,7 +45,6 @@ const styles = createStyles({
 
 interface PaymentState {
   payment?: CCashCow.Payment;
-  loading: boolean;
   jwt?: string;
 }
 
@@ -54,15 +53,16 @@ class _Payment extends React.Component<
   PaymentState
 > {
   interval?: NodeJS.Timer;
-  state: PaymentState = { loading: true };
+  state: PaymentState = {};
 
   componentDidMount() {
     const { jwt }: { jwt?: string } = parse(location.search.substr(1));
+    if (!jwt) return location.replace(process.enve.APP_PAYMENT_URL);
     api
       .get('/payment', { params: { jwt } })
       .then(res => {
         const payment: CCashCow.Payment = res.data;
-        this.setState({ payment, loading: false, jwt });
+        this.setState({ payment, jwt });
         if (payment.paid) throw 'Payment already paid';
         if (payment.method) this.waitForPayment();
       })
@@ -71,15 +71,15 @@ class _Payment extends React.Component<
       );
   }
 
-  onPay(method: CCashCow.PaymentMethod) {
+  onPay(paymentId: CCashCow.Payment['id'], method: CCashCow.PaymentMethod) {
     api
-      .post(`/payment/${method}/start`, { paymentId: this.state.payment.id })
+      .post(`/payment/${method}/start`, { paymentId })
       .then(res => location.replace(res.data.url))
       .catch(err => this.props.enqueueSnackbar(err.response.data.error));
   }
 
   waitForPayment() {
-    const { method } = this.state.payment;
+    const { method } = this.state.payment as CCashCow.Payment;
     this.interval = setInterval(
       () =>
         api
@@ -95,9 +95,9 @@ class _Payment extends React.Component<
   }
 
   render() {
-    const { payment, loading, jwt } = this.state;
+    const { payment, jwt } = this.state;
     const { classes } = this.props;
-    if (loading) return null;
+    if (!payment) return null;
     return (
       <main className={classes.main}>
         {payment.method === undefined ? (
@@ -111,7 +111,7 @@ class _Payment extends React.Component<
               {payment.methods.indexOf('square') > -1 ? (
                 <Button
                   className={classes.ccButton}
-                  onClick={() => this.onPay('square')}
+                  onClick={() => this.onPay(payment.id, 'square')}
                   variant="contained"
                   color="primary"
                 >
@@ -120,7 +120,7 @@ class _Payment extends React.Component<
               ) : null}
               {payment.methods.indexOf('coinbase-commerce') > -1 ? (
                 <Button
-                  onClick={() => this.onPay('coinbase-commerce')}
+                  onClick={() => this.onPay(payment.id, 'coinbase-commerce')}
                   variant="contained"
                   color="secondary"
                 >
@@ -139,7 +139,10 @@ class _Payment extends React.Component<
         )}
         <footer className={classes.footer}>
           <Button
-            href={process.enve.APP_PAYMENT_URL.replace('{{JWT}}', jwt)}
+            href={process.enve.APP_PAYMENT_URL.replace(
+              '{{JWT}}',
+              jwt as string
+            )}
             color="secondary"
           >
             Back to {process.enve.NAME}

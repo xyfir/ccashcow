@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "incremental": true,
     "sourceMap": true,
     "baseUrl": "./",
     "rootDir": "./",
@@ -7,6 +8,7 @@
     "target": "esnext",
     "module": "commonjs",
     "outDir": "./dist",
+    "strict": true,
     "paths": {
       "types/*": ["../types/*"]
     }

@@ -25,7 +25,8 @@ export async function finishCoinbaseCommercePayment(
   const completed =
     res.data.data.timeline.findIndex(
       // Docs not clear on which to expect so check for either
-      e => e.status == 'CONFIRMED' || e.status == 'COMPLETED'
+      (e: { status: string }) =>
+        e.status == 'CONFIRMED' || e.status == 'COMPLETED'
     ) > -1;
   if (!completed && typeof test == 'undefined')
     throw 'Payment has not been completed';
