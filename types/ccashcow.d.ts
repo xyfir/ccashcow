@@ -86,7 +86,7 @@ export namespace CCashCow {
       /**
        * For Jest tests. Keep this as such so the TypeScript compiler is happy
        */
-      TEST_STORAGE: object;
+      TEST_STORAGE: any;
       /**
        * Absolute path for ccashcow-web.
        * @example "/path/to/ccashcow/web"
@@ -109,7 +109,7 @@ export namespace CCashCow {
        * Options for the user database (uses node-persist). All that's needed is `dir`
        * https://www.npmjs.com/package/node-persist#async-initoptions-callback
        */
-      STORAGE: object;
+      STORAGE: any;
       /**
        * Your api key for Coinbase Commerce if you wish to accept cryptocurrencies
        */
@@ -122,14 +122,26 @@ export namespace CCashCow {
        */
       PORT: number;
       /**
-       * Passed to Material-UI's `createMUITheme()`. Can be left an empty object
+       * Passed to Material-UI's `createMUITheme()`. Can be left an empty
+       *  object. If you provide an array, the first element will be treated
+       *  as a light theme and the second element as a dark theme. Make sure
+       *  the `palette.type` property is set respectively.
        * https://material-ui.com/style/color/#color-tool
+       * @example {}
+       * @example [{"palette":{"type":"light"}},{"palette":{"type":"dark"}}]
        */
-      THEME: object;
+      THEME: any | any[];
       /**
        * URL to your app's favicon
        */
       FAVICON: string;
+      /**
+       * If you provide both light and dark themes, this is the key used for
+       *  `localStorage.getItem()` to retrieve the current theme type
+       *  (`"light"` or `"dark"`).
+       * @example "theme"
+       */
+      THEME_TYPE_KEY?: string;
       /**
        * Where your users will be redirected to from CCashCow. `{{JWT}}` will be
        *  replaced with the actual JWT.
