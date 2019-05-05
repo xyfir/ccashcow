@@ -1,4 +1,4 @@
-import { withSnackbar, withSnackbarProps } from 'notistack';
+import { withSnackbar, WithSnackbarProps } from 'notistack';
 import { formatAmount } from 'lib/format-amount';
 import { CCashCow } from 'types/ccashcow';
 import * as React from 'react';
@@ -50,7 +50,7 @@ interface PaymentState {
 }
 
 class _Payment extends React.Component<
-  WithStyles<typeof styles> & withSnackbarProps,
+  WithStyles<typeof styles> & WithSnackbarProps,
   PaymentState
 > {
   interval?: NodeJS.Timer;
