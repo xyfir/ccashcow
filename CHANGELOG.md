@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [2.1.1] - 2019-06-16
+
+### Changed
+
+- Significantly decrease size
+
+### Removed
+
+- Broken 'dismiss' button in alerts
+
 ## [2.1.0] - 2019-05-04
 
 ### Added
@@ -17,5 +27,6 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 - Enable TypeScript strict mode
 
-[unreleased]: https://github.com/Xyfir/ccashcow/compare/2.1.0...HEAD
+[unreleased]: https://github.com/Xyfir/ccashcow/compare/2.1.1...HEAD
+[2.1.1]: https://github.com/Xyfir/ccashcow/releases/tag/2.1.0...2.1.1
 [2.1.0]: https://github.com/Xyfir/ccashcow/releases/tag/2.1.0
