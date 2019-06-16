@@ -18,11 +18,6 @@ const _App = () => (
   <MuiThemeProvider theme={theme}>
     <CssBaseline />
     <SnackbarProvider
-      action={[
-        <Button color="primary" size="small">
-          Dismiss
-        </Button>
-      ]}
       maxSnack={2}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
