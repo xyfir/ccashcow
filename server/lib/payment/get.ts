@@ -1,6 +1,6 @@
 import { verifyJWT } from 'lib/jwt';
-import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
+import storage from 'node-persist';
 
 export async function getPayment(jwt: string): Promise<CCashCow.Payment> {
   const provided = await verifyJWT(jwt, process.enve.JWT_KEY);

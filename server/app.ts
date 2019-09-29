@@ -3,11 +3,11 @@ import { config } from 'dotenv';
 config();
 import 'enve';
 
-import * as bodyParser from 'body-parser';
-import * as Express from 'express';
 import { CCashCow } from 'types/ccashcow';
 import { resolve } from 'path';
+import bodyParser from 'body-parser';
 import { router } from 'api/router';
+import Express from 'express';
 
 declare global {
   namespace NodeJS {

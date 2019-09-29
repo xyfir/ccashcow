@@ -1,5 +1,5 @@
 import { verifyJWT, signJWT } from 'lib/jwt';
-import * as storage from 'node-persist';
+import storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
 import axios from 'axios';
 
