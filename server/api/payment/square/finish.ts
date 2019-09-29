@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { finishSquarePayment } from 'lib/payment/square/finish';
+import { finishSquarePayment } from 'lib/payment/square';
 
 export function api_finishSquarePayment(
   req: Request,

@@ -1,5 +1,4 @@
-import { finishSquarePayment } from 'lib/payment/square/finish';
-import { startSquarePayment } from 'lib/payment/square/start';
+import { finishSquarePayment, startSquarePayment } from 'lib/payment/square';
 import { verifyJWT, signJWT } from 'lib/jwt';
 import { getPayment } from 'lib/payment/get';
 import * as storage from 'node-persist';
