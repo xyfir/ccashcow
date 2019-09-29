@@ -1,35 +1,13 @@
 import { finishSquarePayment, startSquarePayment } from 'lib/payment/square';
 import { verifyJWT, signJWT } from 'lib/jwt';
 import { getPayment } from 'lib/payment/get';
-import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
+import storage from 'node-persist';
 import axios from 'axios';
 import {
   finishCoinbaseCommercePayment,
   startCoinbaseCommercePayment
 } from 'lib/payment/coinbase-commerce';
-
-beforeAll(async () => {
-  await storage.init(process.enve.TEST_STORAGE);
-  for (let i = 1; i < 4; i++) await storage.removeItem(`payment-${i}`);
-});
-
-test('get payment', async () => {
-  const jwt = await signJWT(
-    { id: 1, amount: 999, methods: ['square'] },
-    process.enve.JWT_KEY
-  );
-
-  let payment = await getPayment(jwt);
-  expect(payment.id).toBe(1);
-
-  const _payment: CCashCow.Payment = await storage.getItem('payment-1');
-  expect(_payment).not.toBeUndefined();
-  expect(_payment.id).toBe(1);
-
-  payment = await getPayment(jwt);
-  expect(payment.id).toBe(1);
-});
 
 test('square payment', async () => {
   const _jwt = await signJWT(
