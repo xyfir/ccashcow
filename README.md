@@ -32,7 +32,7 @@ As simple as CCashCow is, you'll still need to download, configure, build, and i
 ## Step 0: Clone the repo
 
 ```bash
-git clone https://github.com/Xyfir/ccashcow.git
+git clone https://github.com/xyfir/ccashcow.git
 cd ccashcow
 ```
 
@@ -65,7 +65,7 @@ cp web/example.env web/.env
 
 ### Step 2b: Edit `.env` files
 
-Edit the files `server/.env` and `web/.env`. Update the config keys with your own values. You can find descriptions for each one under the `CCashCow` -> `Env` namespaces in the [type definitions](https://github.com/Xyfir/ccashcow/blob/master/types/ccashcow.d.ts). Use the appropriate `interface` for each corresponding file.
+Edit the files `server/.env` and `web/.env`. Update the config keys with your own values. You can find descriptions for each one under the `CCashCow` -> `Env` namespaces in the [type definitions](https://github.com/xyfir/ccashcow/blob/master/types/ccashcow.d.ts). Use the appropriate `interface` for each corresponding file.
 
 ## Step 3: Build from source
 
@@ -105,7 +105,7 @@ To be a bit more specific:
 5. At some point the user will be redirected back to your app with the JWT in the url as you configured. Verify and decode this JWT to retrieve the payment information.
 6. Using the JWT's payload, your app will check if the payment as been paid, and if your app has not already fulfilled the user's order it will do so then.
 
-Check the [CCashCow.Payment](https://github.com/Xyfir/ccashcow/blob/master/types/ccashcow.d.ts) interface. Your app should only ever send a JWT containing `id`, `amount`, and `methods`; everything else will be added by CCashCow and sent back to your app with the user later. To check if a payment has been paid, all you have to do is check that `paid` is a number, and not `undefined`. Other values sent back to your app like `method` or `squareTransactionId` can be ignored unless you have some other use for them.
+Check the [CCashCow.Payment](https://github.com/xyfir/ccashcow/blob/master/types/ccashcow.d.ts) interface. Your app should only ever send a JWT containing `id`, `amount`, and `methods`; everything else will be added by CCashCow and sent back to your app with the user later. To check if a payment has been paid, all you have to do is check that `paid` is a number, and not `undefined`. Other values sent back to your app like `method` or `squareTransactionId` can be ignored unless you have some other use for them.
 
 # Contribute
 
