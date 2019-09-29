@@ -1,7 +1,3 @@
-import { config } from 'dotenv';
-config();
-import 'enve';
-
 import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/finish';
 import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
 import { finishSquarePayment } from 'lib/payment/square/finish';
@@ -11,20 +7,10 @@ import { getPayment } from 'lib/payment/get';
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
 import axios from 'axios';
-import 'jest-extended';
 
 beforeAll(async () => {
   await storage.init(process.enve.TEST_STORAGE);
   for (let i = 1; i < 4; i++) await storage.removeItem(`payment-${i}`);
-});
-
-test('sign and verify jwt', async () => {
-  const payment: CCashCow.Payment = { id: 1, amount: 999, methods: ['square'] };
-  const encoded = await signJWT(payment, process.enve.JWT_KEY);
-  const decoded = await verifyJWT(encoded, process.enve.JWT_KEY);
-  expect(decoded.id).toBe(1);
-  expect(decoded.amount).toBe(999);
-  expect(decoded.methods).toMatchObject(['square']);
 });
 
 test('get payment', async () => {
