@@ -4,7 +4,6 @@ import storage from 'node-persist';
 
 export async function getPayment(jwt: string): Promise<CCashCow.Payment> {
   const provided = await verifyJWT(jwt, process.enve.JWT_KEY);
-  await storage.init(process.enve.STORAGE);
   let saved: CCashCow.Payment = await storage.getItem(`payment-${provided.id}`);
 
   // Save payment

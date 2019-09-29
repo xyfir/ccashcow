@@ -1,13 +1,12 @@
 import { verifyJWT, signJWT } from 'lib/jwt';
-import storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
+import storage from 'node-persist';
 import axios from 'axios';
 
 export async function startSquarePayment(
   paymentId: CCashCow.Payment['id']
 ): Promise<{ url: string }> {
   // Get payment
-  await storage.init(process.enve.STORAGE);
   const payment: CCashCow.Payment = await storage.getItem(
     `payment-${paymentId}`
   );
@@ -59,7 +58,6 @@ export async function finishSquarePayment(
 ): Promise<{ jwt: string }> {
   const { id: paymentId } = await verifyJWT(jwt, process.enve.JWT_KEY);
 
-  await storage.init(process.enve.STORAGE);
   const payment: CCashCow.Payment = await storage.getItem(
     `payment-${paymentId}`
   );

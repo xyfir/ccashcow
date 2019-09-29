@@ -7,6 +7,7 @@ import { CCashCow } from 'types/ccashcow';
 import { resolve } from 'path';
 import bodyParser from 'body-parser';
 import { router } from 'api/router';
+import storage from 'node-persist';
 import Express from 'express';
 
 declare global {
@@ -16,6 +17,8 @@ declare global {
     }
   }
 }
+
+storage.init(process.enve.STORAGE);
 
 const app = Express();
 if (process.enve.NODE_ENV == 'development') {
