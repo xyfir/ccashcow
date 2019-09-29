@@ -38,6 +38,7 @@
     "jest": "^24.9.0",
     "jest-extended": "^0.11.2",
     "nodemon": "^1.19.3",
+    "ts-jest": "^24.1.0",
     "typescript": "^3.6.3"
   },
   "keywords": [
