@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
+import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce';
 
 export function api_startCoinbaseCommercePayment(
   req: Request,

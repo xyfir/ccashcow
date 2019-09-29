@@ -1,5 +1,5 @@
 import { NextFunction, Response, Request } from 'express';
-import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/finish';
+import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce';
 
 export function api_finishCoinbaseCommercePayment(
   req: Request,

@@ -1,5 +1,3 @@
-import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/finish';
-import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
 import { finishSquarePayment } from 'lib/payment/square/finish';
 import { startSquarePayment } from 'lib/payment/square/start';
 import { verifyJWT, signJWT } from 'lib/jwt';
@@ -7,6 +5,10 @@ import { getPayment } from 'lib/payment/get';
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
 import axios from 'axios';
+import {
+  finishCoinbaseCommercePayment,
+  startCoinbaseCommercePayment
+} from 'lib/payment/coinbase-commerce';
 
 beforeAll(async () => {
   await storage.init(process.enve.TEST_STORAGE);
