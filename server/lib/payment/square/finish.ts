@@ -1,7 +1,6 @@
-import { verifyJWT } from 'lib/jwt/verify';
+import { verifyJWT, signJWT } from 'lib/jwt';
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
-import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 
 export async function finishSquarePayment(
@@ -19,9 +18,7 @@ export async function finishSquarePayment(
 
   // Verify transaction with Square
   const res = await axios.get(
-    `https://connect.squareup.com/v2/locations/${
-      process.enve.SQUARE_LOCATION_KEY
-    }/transactions/${squareTransactionId}`,
+    `https://connect.squareup.com/v2/locations/${process.enve.SQUARE_LOCATION_KEY}/transactions/${squareTransactionId}`,
     { headers: { Authorization: `Bearer ${process.enve.SQUARE_ACCESS_TOKEN}` } }
   );
   if (res.data.transaction.reference_id != payment.id.toString())

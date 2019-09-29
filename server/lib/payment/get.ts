@@ -1,4 +1,4 @@
-import { verifyJWT } from 'lib/jwt/verify';
+import { verifyJWT } from 'lib/jwt';
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
 

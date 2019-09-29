@@ -1,6 +1,6 @@
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
-import { signJWT } from 'lib/jwt/sign';
+import { signJWT } from 'lib/jwt';
 import axios from 'axios';
 
 export async function startCoinbaseCommercePayment(

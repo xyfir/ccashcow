@@ -6,11 +6,10 @@ import { finishCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/fin
 import { startCoinbaseCommercePayment } from 'lib/payment/coinbase-commerce/start';
 import { finishSquarePayment } from 'lib/payment/square/finish';
 import { startSquarePayment } from 'lib/payment/square/start';
+import { verifyJWT, signJWT } from 'lib/jwt';
 import { getPayment } from 'lib/payment/get';
-import { verifyJWT } from 'lib/jwt/verify';
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
-import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 import 'jest-extended';
 
@@ -57,9 +56,7 @@ test('square payment', async () => {
   expect(payment.method).toBe('square');
 
   const res = await axios.post(
-    `https://connect.squareup.com/v2/locations/${
-      process.enve.SQUARE_LOCATION_KEY
-    }/transactions`,
+    `https://connect.squareup.com/v2/locations/${process.enve.SQUARE_LOCATION_KEY}/transactions`,
     {
       card_nonce: 'fake-card-nonce-ok',
       amount_money: {

@@ -1,7 +1,6 @@
-import { verifyJWT } from 'lib/jwt/verify';
+import { verifyJWT, signJWT } from 'lib/jwt';
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
-import { signJWT } from 'lib/jwt/sign';
 import axios from 'axios';
 
 export async function finishCoinbaseCommercePayment(
@@ -18,9 +17,7 @@ export async function finishCoinbaseCommercePayment(
 
   // Verify charge was completed
   const res = await axios.get(
-    `https://api.commerce.coinbase.com/charges/${
-      payment.coinbaseCommerceChargeCode
-    }`
+    `https://api.commerce.coinbase.com/charges/${payment.coinbaseCommerceChargeCode}`
   );
   const completed =
     res.data.data.timeline.findIndex(

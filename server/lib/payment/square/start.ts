@@ -1,6 +1,6 @@
 import * as storage from 'node-persist';
 import { CCashCow } from 'types/ccashcow';
-import { signJWT } from 'lib/jwt/sign';
+import { signJWT } from 'lib/jwt';
 import axios from 'axios';
 
 export async function startSquarePayment(
@@ -21,9 +21,7 @@ export async function startSquarePayment(
   // Create Checkout
   const jwt = await signJWT(payment, process.enve.JWT_KEY);
   const res = await axios.post(
-    `https://connect.squareup.com/v2/locations/${
-      process.enve.SQUARE_LOCATION_KEY
-    }/checkouts`,
+    `https://connect.squareup.com/v2/locations/${process.enve.SQUARE_LOCATION_KEY}/checkouts`,
     {
       order: {
         line_items: [
