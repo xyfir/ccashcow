@@ -1,14 +1,14 @@
 {
   "name": "ccashcow",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "Accept cards & crypto. Payments so easy a cow could do it.",
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "ccashcow-server": "2.1.1",
-    "ccashcow-web": "2.1.1"
+    "ccashcow-server": "2.1.2",
+    "ccashcow-web": "2.1.2"
   },
   "prettier": {
     "singleQuote": true
@@ -17,12 +17,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Xyfir/ccashcow.git"
+    "url": "git+https://github.com/xyfir/ccashcow.git"
   },
   "bugs": {
-    "url": "https://github.com/Xyfir/ccashcow/issues"
+    "url": "https://github.com/xyfir/ccashcow/issues"
   },
-  "homepage": "https://github.com/Xyfir/ccashcow#readme",
+  "homepage": "https://github.com/xyfir/ccashcow#readme",
   "keywords": [
     "square",
     "squareup",
