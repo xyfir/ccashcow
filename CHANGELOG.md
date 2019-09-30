@@ -6,6 +6,16 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 ## [Unreleased]
 
+## [2.1.2] - 2019-09-30
+
+### Added
+
+- Travis CI testing and deployment
+
+### Changed
+
+- Improve tests and coverage
+
 ## [2.1.1] - 2019-06-16
 
 ### Changed
@@ -27,6 +37,7 @@ This project adheres to [Semantic Versioning](https://semver.org).
 
 - Enable TypeScript strict mode
 
-[unreleased]: https://github.com/Xyfir/ccashcow/compare/2.1.1...HEAD
-[2.1.1]: https://github.com/Xyfir/ccashcow/releases/tag/2.1.0...2.1.1
-[2.1.0]: https://github.com/Xyfir/ccashcow/releases/tag/2.1.0
+[unreleased]: https://github.com/xyfir/ccashcow/compare/2.1.2...HEAD
+[2.1.2]: https://github.com/xyfir/ccashcow/releases/tag/2.1.2
+[2.1.1]: https://github.com/xyfir/ccashcow/releases/tag/2.1.1
+[2.1.0]: https://github.com/xyfir/ccashcow/releases/tag/2.1.0
