@@ -43,7 +43,7 @@
     "@types/html-webpack-plugin": "^3.2.1",
     "@types/jest": "^24.0.18",
     "@types/qs": "^6.5.3",
-    "@types/react": "^16.9.3",
+    "@types/react": "^16.9.4",
     "@types/react-dom": "^16.9.1",
     "@types/webpack": "^4.39.2",
     "babel-loader": "^8.0.6",
