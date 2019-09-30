@@ -8,6 +8,8 @@ CCashCow is a small app that sits between your application and the payment proce
 
 Built and mantained by **[Ptorx](https://ptorx.com)** and other **[Xyfir](https://www.xyfir.com)** projects.
 
+[![Build Status](https://travis-ci.org/xyfir/ccashcow.svg?branch=master)](https://travis-ci.org/xyfir/ccashcow)
+
 # Features
 
 - Accept **c**redit **c**ards and debit cards with [Square](https://squareup.com/i/XYFIRLLC00)
