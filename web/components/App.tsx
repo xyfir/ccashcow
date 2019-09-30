@@ -4,6 +4,7 @@ import { CssBaseline } from '@material-ui/core';
 import { CCashCow } from 'types/ccashcow';
 import { Payment } from 'components/Payment';
 import { theme } from 'lib/theme';
+import { parse } from 'qs';
 import { hot } from 'react-hot-loader';
 import React from 'react';
 
@@ -22,7 +23,7 @@ const _App = () => (
       maxSnack={2}
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
-      <Payment />
+      <Payment qs={parse(location.search.substr(1))} />
     </SnackbarProvider>
   </ThemeProvider>
 );

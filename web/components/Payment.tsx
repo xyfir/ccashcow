@@ -1,7 +1,6 @@
 import { withSnackbar, WithSnackbarProps } from 'notistack';
 import { formatAmount } from 'lib/format-amount';
 import { CCashCow } from 'types/ccashcow';
-import { parse } from 'qs';
 import { api } from 'lib/api';
 import React from 'react';
 import {
@@ -48,15 +47,16 @@ interface PaymentState {
   jwt?: string;
 }
 
-class _Payment extends React.Component<
-  WithStyles<typeof styles> & WithSnackbarProps,
-  PaymentState
-> {
+interface PaymentProps extends WithStyles<typeof styles>, WithSnackbarProps {
+  qs: { [x: string]: string };
+}
+
+class _Payment extends React.Component<PaymentProps, PaymentState> {
   interval?: NodeJS.Timer;
   state: PaymentState = {};
 
   componentDidMount() {
-    const { jwt }: { jwt?: string } = parse(location.search.substr(1));
+    const { jwt } = this.props.qs;
     if (!jwt) return location.replace(process.enve.APP_PAYMENT_URL);
     api
       .get('/payment', { params: { jwt } })
@@ -83,7 +83,7 @@ class _Payment extends React.Component<
     this.interval = setInterval(
       () =>
         api
-          .post(`/payment/${method}/finish`, parse(location.search.substr(1)))
+          .post(`/payment/${method}/finish`, this.props.qs)
           .then(res =>
             location.replace(
               process.enve.APP_PAYMENT_URL.replace('{{JWT}}', res.data.jwt)
