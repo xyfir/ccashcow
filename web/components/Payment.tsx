@@ -1,9 +1,9 @@
 import { withSnackbar, WithSnackbarProps } from 'notistack';
 import { formatAmount } from 'lib/format-amount';
 import { CCashCow } from 'types/ccashcow';
-import * as React from 'react';
 import { parse } from 'qs';
 import { api } from 'lib/api';
+import React from 'react';
 import {
   createStyles,
   withStyles,

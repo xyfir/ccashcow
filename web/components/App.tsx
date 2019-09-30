@@ -3,9 +3,9 @@ import { ThemeProvider } from '@material-ui/styles';
 import { CssBaseline } from '@material-ui/core';
 import { CCashCow } from 'types/ccashcow';
 import { Payment } from 'components/Payment';
-import * as React from 'react';
 import { theme } from 'lib/theme';
 import { hot } from 'react-hot-loader';
+import React from 'react';
 
 declare global {
   namespace NodeJS {
