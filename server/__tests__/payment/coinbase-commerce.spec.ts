@@ -1,6 +1,7 @@
 import { verifyJWT, signJWT } from 'lib/jwt';
 import { CCashCow } from 'types/ccashcow';
 import storage from 'node-persist';
+import axios from 'axios';
 import {
   finishCoinbaseCommercePayment,
   startCoinbaseCommercePayment
@@ -20,6 +21,13 @@ test('startCoinbaseCommercePayment(), finishCoinbaseCommercePayment()', async ()
   mockGetItem.mockResolvedValueOnce(payment);
   mockSetItem.mockResolvedValueOnce(undefined);
 
+  // Mock API
+  const mockPost = ((axios as any).post = jest.fn());
+  const mockGet = ((axios as any).get = jest.fn());
+  mockPost.mockResolvedValueOnce({
+    data: { data: { hosted_url: 'url', code: 'code' } }
+  });
+
   // Start payment
   const { url } = await startCoinbaseCommercePayment(3);
 
@@ -34,12 +42,18 @@ test('startCoinbaseCommercePayment(), finishCoinbaseCommercePayment()', async ()
   expect(
     (mockSetItem.mock.calls[0][1] as CCashCow.Payment)
       .coinbaseCommerceChargeCode
-  ).toBeString();
-  expect(url).toStartWith('https://commerce.coinbase.com/charges/');
+  ).toBe('code');
+  expect(url).toBe('url');
+  expect(mockPost).toHaveBeenCalledTimes(1);
 
   // Mock storage
   mockGetItem.mockResolvedValueOnce(mockSetItem.mock.calls[0][1]);
   mockSetItem.mockResolvedValueOnce(undefined);
+
+  // Mock API
+  mockGet.mockResolvedValueOnce({
+    data: { data: { timeline: [{ status: 'CONFIRMED' }] } }
+  });
 
   // Finish payment
   const { jwt } = await finishCoinbaseCommercePayment(
@@ -47,6 +61,7 @@ test('startCoinbaseCommercePayment(), finishCoinbaseCommercePayment()', async ()
   );
 
   // Validate completed payment
+  expect(mockGet).toHaveBeenCalledTimes(1);
   expect(mockGetItem).toHaveBeenCalledTimes(2);
   expect(mockSetItem).toHaveBeenCalledTimes(2);
   await expect(verifyJWT(jwt, process.enve.JWT_KEY)).not.toReject();
