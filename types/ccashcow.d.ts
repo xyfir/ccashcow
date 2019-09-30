@@ -84,10 +84,6 @@ export namespace CCashCow {
        */
       JWT_KEY: string;
       /**
-       * For Jest tests. Keep this as such so the TypeScript compiler is happy
-       */
-      TEST_STORAGE: any;
-      /**
        * Absolute path for ccashcow-web.
        * @example "/path/to/ccashcow/web"
        */
