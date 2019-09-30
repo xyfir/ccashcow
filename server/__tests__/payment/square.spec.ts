@@ -53,6 +53,10 @@ test('startSquarePayment(), finishSquarePayment()', async () => {
   );
   const squareTransactionId: string = res.data.transaction.id;
 
+  // Mock storage
+  mockGetItem.mockResolvedValueOnce(mockSetItem.mock.calls[0][1]);
+  mockSetItem.mockResolvedValueOnce(undefined);
+
   // Finish payment
   const { jwt } = await finishSquarePayment(
     await signJWT(payment, process.enve.JWT_KEY),
