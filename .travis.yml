@@ -1,0 +1,36 @@
+language: node_js
+node_js: node
+before_install: cd "/home/travis/build/xyfir/ccashcow/$PACKAGE"
+jobs:
+  include:
+    - stage: server
+      script: bash ../.travis.sh
+      env:
+        - PACKAGE="server"
+    - stage: web
+      script: bash ../.travis.sh
+      env:
+        - PACKAGE="web"
+    - stage: root
+      script: bash .travis.sh
+      env:
+        - PACKAGE="."
+stages:
+  - server
+  - web
+  - root
+deploy:
+  - provider: npm
+    email: contact@xyfir.com
+    api_key:
+      secure: GFKReA/D2XYwDCPZskVNpHseFSvYU+OQXVbK3UIFPVGwjkUJOlPbGsn1+Smve9Qzd8xDWa7pkmkFjOpFyQIzzKRSGKKhmp9mRGgbWc7YmdS7oQEcqGaMUzh8vdobhh98PIAjNXzBf9QjKvAlTQn/Jysj+cbZyvf2Mcun5YgkhXcW20gWAUEhGzQNTrrwYwKdQO7nDzrP0qi3808PdSoYmd5IqiJAmGlJ0m4rfL1EMXlbo5PSKy7Ad6lutOIzCVpZ2720iNvbPVG3PP0+kc2EQN7dNEh0bDzIALrRXvQUXq3VQvwYXHhmKh5FCkJLBIIDNjVgjEgxplkoYoTbcMq9Gym0gsyir3faDPMxi6XeW3N28SMS8ze78ntZ6ZM6q+kiEBe9YvWWGPddZmaOtFWzwjH5DFfsGn22pVcNSvPvXA1QRlyP47lcUpEeQrqy7JyVWPW1sbwSCf4PnG2BUPMuAtU8cjdKvV9znSdnXM6Ru+o1L/i8MoYFboPrgIDFCuhCZ967MSUnAokoDAj4eQKHW+9J2FGqaAjbiM0fA+xkq0ZPztyK6+W3fFqt3v9QN8yzHTxJRAungfjP7vguytNl+AXlLJhUJj+plVDEPDt2OlG0KztsfRqbq9cnLbqFeA8QJBQklb8Ffk8GQ9awg7gPncdxktDPm5t3jScSE0nmqw4=
+    on:
+      repo: xyfir/ccashcow
+      tags: true
+  - provider: releases
+    api_key:
+      secure: u5+vgMebxVsIB9UtOlXIa8SdZI9Ya0bV8l8rsczw4cPAu72gRSRFqMr+kwA/EbbJky/2xycPDkw9INPu/WKdtsGWVBgsKr6PNNNuduNVFOI40Olvw0otX/XqVDAZCkhGgti05MosVDne2sOPx2gqr6bEaK8M4RKJ/H368RnBoMynELrMl9/hihVuBuZVnNyIb+Cvw0EFuY/2mlugcwMXb68raLoAgdtm0bD4RaLCEi/f/dCfb+KdUs9oXu02yFal5oP7P/Fxp8cFonu74xMG4JQC4JI89L9ZdqqALvaKXcutpUuY0cS41UYtQYlmf7DGDHYHYEyBQZVuqOX6lZdzUnKYN6rN6p5iBALMnCxTB+p2+0al+nX4Ft+1qfFtYfySFSf7Iij2a4OkNa9fURguA9QOLW3WGeRk57Vp7ndx68Qd093e9bYy+g/hRJ3/Qzmz8JUxjR+S2zAtUxIIMOPnIDTX4asshuyKKXYOurc5lwCixiqU58s2j1h8jUu9D3ffMkiCB/bKRXKtwGLP54TXom769Q14hmRgk/PHkW2Lkr6eUmTdcckpotp/RZOIApjFRA8PUE2wv982An7bKDWVF9ULtWw51l+OkKNsLJj4feQhb8j/i0XxKwLgzzmo9mf5n5dt4JIoCHpzGv3Xx0n9JNYgKq0rRTofeT3zRru9aSU=
+    on:
+      condition: $PACKAGE = .
+      repo: xyfir/ccashcow
+      tags: true
