@@ -1,14 +1,10 @@
 # CCashCow 💳💲🐄
 
-Accept credit cards and cryptocurrencies. Dead simple user payment system so simple a ~~caveman~~ **cow** could do it.
+Accept credit cards and cryptocurrencies.
 
 CCashCow is a small app that sits between your application and the payment processors it uses. CCashCow offloads as much of the logic and user-interaction as possible to the forms maintained by and hosted on the payment processors themselves. Your app in turn offloads to CCashCow everything but the bare minimum needed for your app to accept payments. The end result is a system that's straightforward for developers and users, secure, easy to mantain, and as customizable as possible without introducing too much complexity.
 
 ![](https://i.imgur.com/bDtQ3yF.png)
-
-Built and mantained by **[Ptorx](https://ptorx.com)** and other **[Xyfir](https://www.xyfir.com)** projects.
-
-[![Build Status](https://travis-ci.org/xyfir/ccashcow.svg?branch=master)](https://travis-ci.org/xyfir/ccashcow)
 
 # Features
 
